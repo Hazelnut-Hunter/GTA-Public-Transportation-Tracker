@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TTC Live Vehicle Tracker - GTA</title>
+    <meta name="theme-color" content="#DA291C">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TTC Tracker">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚌</text></svg>">
+    
+    <!-- Leaflet & MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <h3 id="txt-loading-msg">Connecting to TTC Server...<br>Please wait while live vehicle locations load.</h3>
+    </div>
+    
+    <!-- Navigation Bar -->
+    <div id="navbar">
+        <div class="nav-brand">
+            <span class="ttc-badge">TTC</span>
+            <span class="nav-title" id="txt-nav-title">TTC Live Vehicle Tracker</span>
+            <span id="live-count-badge" class="live-count-badge">0 Live</span>
+        </div>
+        <div class="nav-buttons">
+            <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+            <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+            <button class="lang-btn" onclick="setLanguage('zh')">中文</button>
+        </div>
+    </div>
+
+    <!-- Search & Filter Container -->
+    <div id="search-container">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="route-search" placeholder="Search Route (e.g. 1, 501, 96)..." autocomplete="off">
+            <button id="clear-search" onclick="clearSelection()" style="display:none;">✕</button>
+        </div>
+        
+        <!-- Transit Mode Filter Pills -->
+        <div id="mode-filters">
+            <button class="mode-btn active" onclick="setModeFilter('all')" id="btn-mode-all">🌐 All</button>
+            <button class="mode-btn" onclick="setModeFilter('bus')" id="btn-mode-bus">🚌 Bus</button>
+            <button class="mode-btn" onclick="setModeFilter('streetcar')" id="btn-mode-streetcar">🚋 Streetcar</button>
+            <button class="mode-btn" onclick="setModeFilter('subway')" id="btn-mode-subway">🚇 Subway</button>
+        </div>
+
+        <div id="route-list" class="route-list-hidden"></div>
+    </div>
+
+    <!-- Warning Alert Button -->
+    <div id="warning">
+        <button id="warning-btn" onclick="showErrorDetail()" title="Data Feed Warning">⚠️</button>
+    </div>
+
+    <!-- Info Header Widget -->
+    <div id="info">
+        <h2 id="txt-welcome">Toronto Transit Commission Tracker</h2>
+        <p>
+            <span id="txt-time">Current Time:</span>
+            <time id="current-time">Loading...</time>
+        </p>
+    </div>
+
+    <!-- Map Controls (Theme Switcher, Geolocation, Custom Zoom In/Out Stack) -->
+    <div id="map-controls">
+        <button id="theme-btn" onclick="toggleMapTheme()" title="Switch Map Theme (Dark / Light / Satellite)">🗺️</button>
+        <button id="locate-btn" onclick="locateUser()" title="Find My Location">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0 0 13 3.06V1h-2v2.06A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06A8.994 8.994 0 0 0 20.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+            </svg>
+        </button>
+        <button id="zoom-in-btn" onclick="map.zoomIn()" title="Zoom In">➕</button>
+        <button id="zoom-out-btn" onclick="map.zoomOut()" title="Zoom Out">➖</button>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- Leaflet JS & MarkerCluster JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((reg) => console.log('TTC ServiceWorker registered:', reg.scope))
+                    .catch((err) => console.log('ServiceWorker registration failed:', err));
+            });
+        }
+    </script>
+
+</body>
+</html>
