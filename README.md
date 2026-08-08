@@ -13,4 +13,4 @@ A real-time web application to track live Toronto Transit Commission (TTC) buses
 - **Progressive Web App (PWA)**: Installable on mobile and desktop devices with offline asset caching.
 
 ## Connected Backend
-This frontend connects to the Express API in [`GTA-Public-Transportation-Tracker-Backend`](../GTA-Public-Transportation-Tracker-Backend) running at `http://localhost:3000`.
+This frontend connects to the production Express API hosted on Render at [`https://gta-public-transportation-tracker-backend.onrender.com`](https://gta-public-transportation-tracker-backend.onrender.com) (with automatic fallback to `http://localhost:3000` for local development).

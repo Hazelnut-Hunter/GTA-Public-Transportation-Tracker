@@ -106,10 +106,10 @@ const timeFormat = {
 
 let currentLang = 'en';
 
-// Backend Server API URL
-const BACKEND_URL = (window.location.port === '3000') 
-    ? window.location.origin 
-    : 'http://localhost:3000';
+// Backend Server API URL (Render Production + Localhost Fallback)
+const BACKEND_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+    ? 'http://localhost:3000' 
+    : 'https://gta-public-transportation-tracker-backend.onrender.com';
 
 function setLanguage(lang) {
     currentLang = lang;
