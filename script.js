@@ -7,7 +7,7 @@ const translations = {
         loading: "Loading...",
         errorTitle: "TTC Feed Warning",
         errorMessage: "We are currently experiencing delays receiving live vehicle updates from the TTC feed. Map positions may temporarily be delayed.",
-        serverWaking: "Connecting to TTC Server...\nPlease wait while live vehicle locations load.",
+        serverWaking: "Connecting to TTC Server...\n(Free server cold start may take ~20s on initial load)",
         routeLabel: "Route",
         busLabel: "Vehicle ID",
         locationPopup: "You are here",
@@ -39,7 +39,7 @@ const translations = {
         loading: "Chargement...",
         errorTitle: "Avertissement Flux TTC",
         errorMessage: "Des retards sont actuellement observés dans la réception des données TTC en temps réel. Les positions affichées peuvent être retardées.",
-        serverWaking: "Connexion au serveur TTC...\nVeuillez patienter pendant le chargement des véhicules.",
+        serverWaking: "Connexion au serveur TTC...\n(Le premier chargement peut prendre ~20s pour démarrer le serveur gratuit)",
         routeLabel: "Ligne",
         busLabel: "ID Véhicule",
         locationPopup: "Vous êtes ici",
@@ -71,7 +71,7 @@ const translations = {
         loading: "加载中...",
         errorTitle: "TTC数据源提示",
         errorMessage: "当前接收TTC实时位置数据存在延迟，地图上的车辆位置可能会有短暂滞后。",
-        serverWaking: "正在连接TTC服务器...\n请稍候，正在加载车辆位置。",
+        serverWaking: "正在连接TTC服务器...\n(提示: 免费云服务器首次启动需约20秒唤醒，请稍候)",
         routeLabel: "线路",
         busLabel: "车辆 ID",
         locationPopup: "您在这里",
@@ -250,6 +250,16 @@ function toggleFavorite(routeId, event) {
     updateRouteDropdown(currentBusData);
 }
 
+const STREETCAR_ROUTES = new Set(['501', '503', '504', '505', '506', '507', '509', '510', '511', '512', '301', '304', '306', '310']);
+const SUBWAY_ROUTES = new Set(['1', '2', '4', '5', '6']);
+
+function getVehicleType(routeId, routeMetaType) {
+    const rId = String(routeId);
+    if (SUBWAY_ROUTES.has(rId) || String(routeMetaType) === '1') return 'subway';
+    if (STREETCAR_ROUTES.has(rId) || String(routeMetaType) === '0') return 'streetcar';
+    return 'bus';
+}
+
 function showErrorDetail() {
     const title = translations[currentLang].errorTitle;
     const msg = translations[currentLang].errorMessage;
@@ -295,15 +305,16 @@ async function updateBuses() {
                 }
 
                 const routeMeta = routeNames[bus.routeId] || {};
+                const vehicleType = getVehicleType(bus.routeId, routeMeta.type);
                 
-                // Filter by transit mode (0 = streetcar, 1 = subway, 3 = bus)
-                if (selectedMode === 'bus' && routeMeta.type !== '3' && routeMeta.type !== undefined) return;
-                if (selectedMode === 'streetcar' && routeMeta.type !== '0') return;
-                if (selectedMode === 'subway' && routeMeta.type !== '1') return;
+                // Filter by transit mode
+                if (selectedMode === 'bus' && vehicleType !== 'bus') return;
+                if (selectedMode === 'streetcar' && vehicleType !== 'streetcar') return;
+                if (selectedMode === 'subway' && vehicleType !== 'subway') return;
 
                 activeBusIds.add(bus.id);
 
-                const badgeColor = routeMeta.color || '#DA291C';
+                const badgeColor = routeMeta.color || (vehicleType === 'streetcar' ? '#DA291C' : (vehicleType === 'subway' ? '#FFC72C' : '#DA291C'));
                 const badgeTextColor = routeMeta.textColor || '#FFFFFF';
 
                 const customIcon = L.divIcon({
@@ -424,6 +435,8 @@ function createPopupContent(bus) {
 
         const routeMeta = routeNames[bus.routeId] || {};
         const routeNameStr = routeMeta.longName ? ` (${routeMeta.longName})` : '';
+        const vehicleType = getVehicleType(bus.routeId, routeMeta.type);
+        const typeTag = vehicleType === 'streetcar' ? '🚋' : (vehicleType === 'subway' ? '🚇' : '🚌');
         
         let dirText = 'N/A';
         if (bus.directionId === 0) dirText = translations[currentLang].outbound;
@@ -440,7 +453,7 @@ function createPopupContent(bus) {
             <div class="popup-card">
                 <div class="popup-title">
                     <span>${routeLabel} ${bus.routeId}</span>
-                    <span class="popup-tag">${routeMeta.type === '0' ? '🚋' : (routeMeta.type === '1' || bus.routeId === '1' || bus.routeId === '2' || bus.routeId === '4' || bus.routeId === '5' || bus.routeId === '6' ? '🚇' : '🚌')}</span>
+                    <span class="popup-tag">${typeTag}</span>
                 </div>
                 <div>${routeNameStr}</div>
                 <div><b>${busLabel}:</b> ${bus.id}</div>
