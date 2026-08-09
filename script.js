@@ -215,6 +215,21 @@ const markerClusterGroup = L.markerClusterGroup({
 });
 map.addLayer(markerClusterGroup);
 
+let isSpiderfied = false;
+let pendingClusterUpdates = false;
+
+markerClusterGroup.on('spiderfied', () => {
+    isSpiderfied = true;
+});
+
+markerClusterGroup.on('unspiderfied', () => {
+    isSpiderfied = false;
+    if (pendingClusterUpdates) {
+        pendingClusterUpdates = false;
+        setTimeout(updateBuses, 100);
+    }
+});
+
 let busMarkers = {};
 let selectedRoutes = new Set();
 let selectedMode = 'all'; // 'all', 'bus', 'streetcar', 'subway'
@@ -293,6 +308,20 @@ async function updateBuses() {
 
         updateRouteDropdown(buses);
 
+        // If a spiderfied cluster is expanded by user, defer structural cluster re-draws so view isn't interrupted
+        if (isSpiderfied) {
+            pendingClusterUpdates = true;
+            buses.forEach(bus => {
+                if (busMarkers[bus.id]) {
+                    busMarkers[bus.id].busData = bus;
+                    if (busMarkers[bus.id].getPopup()) {
+                        busMarkers[bus.id].getPopup().setContent(createPopupContent(bus));
+                    }
+                }
+            });
+            return;
+        }
+
         const activeBusIds = new Set();
         const markersToAdd = [];
         const markersToRemove = [];
@@ -346,9 +375,9 @@ async function updateBuses() {
                     marker.bindPopup(popupContent);
                     marker.busData = bus;
                     
-                    // Auto-pan to vehicle when clicked
+                    // Auto-pan to vehicle's current position when clicked
                     marker.on('click', () => {
-                        map.panTo([bus.latitude, bus.longitude]);
+                        map.panTo(marker.getLatLng());
                     });
 
                     busMarkers[bus.id] = marker;
