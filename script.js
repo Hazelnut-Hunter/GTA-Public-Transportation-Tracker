@@ -30,7 +30,10 @@ const translations = {
         liveCountTag: "Live",
         anticipatedTag: "Anticipated Location (Schedule Interpolated)",
         themeTooltip: "Switch Map Theme (Dark / Street / Satellite)",
-        locateTooltip: "Find My Location"
+        locateTooltip: "Find My Location",
+        easterEggTitle: "🌊 Easter Egg Discovered!",
+        easterEggDesc: "The author of this transit tracker is based in <b>Halifax, Nova Scotia! 🇨🇦</b>",
+        easterEggBtn: "🚌 Visit Halifax Bus Tracker →"
     },
     fr: {
         navTitle: "Info-Véhicules TTC",
@@ -62,7 +65,10 @@ const translations = {
         liveCountTag: "En direct",
         anticipatedTag: "Emplacement estimé (selon l'horaire)",
         themeTooltip: "Changer le thème de la carte (Sombre / Rue / Satellite)",
-        locateTooltip: "Ma position"
+        locateTooltip: "Ma position",
+        easterEggTitle: "🌊 Secret Découvert !",
+        easterEggDesc: "L'auteur de cette application est basé à <b>Halifax, Nouvelle-Écosse ! 🇨🇦</b>",
+        easterEggBtn: "🚌 Découvrir Halifax Bus Tracker →"
     },
     zh: {
         navTitle: "多伦多TTC实时公交追踪器",
@@ -94,7 +100,10 @@ const translations = {
         liveCountTag: "辆在途",
         anticipatedTag: "预计实时位置 (时刻表推算)",
         themeTooltip: "切换地图主题 (暗黑 / 标准 / 卫星)",
-        locateTooltip: "定位我的位置"
+        locateTooltip: "定位我的位置",
+        easterEggTitle: "🌊 发现隐藏彩蛋！",
+        easterEggDesc: "本公交追踪器的开发者位于 <b>加拿大新斯科舍省哈里法克斯 (Halifax)！🇨🇦</b>",
+        easterEggBtn: "🚌 访问 Halifax 公交追踪器 →"
     }
 };
 
@@ -107,13 +116,13 @@ const timeFormat = {
 let currentLang = 'en';
 
 // Backend Server API URL (Render Production + Localhost Fallback)
-const BACKEND_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
-    ? 'http://localhost:3000' 
+const BACKEND_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000'
     : 'https://gta-public-transportation-tracker-backend.onrender.com';
 
 function setLanguage(lang) {
     currentLang = lang;
-    
+
     // Update language buttons active state
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.textContent.toLowerCase() === lang || (lang === 'zh' && btn.textContent === '中文'));
@@ -143,6 +152,10 @@ function setLanguage(lang) {
 
     if (userMarker) {
         userMarker.setPopupContent(translations[lang].locationPopup);
+    }
+
+    if (halifaxMarker && halifaxMarker.getPopup()) {
+        halifaxMarker.getPopup().setContent(createHalifaxPopupContent());
     }
 
     // Refresh existing bus popups with new language labels
@@ -199,7 +212,7 @@ function toggleMapTheme() {
     if (currentTheme === 'street') currentTheme = 'dark';
     else if (currentTheme === 'dark') currentTheme = 'satellite';
     else currentTheme = 'street';
-    
+
     MAP_THEMES[currentTheme].addTo(map);
 }
 
@@ -289,14 +302,14 @@ let isFirstLoad = true;
 async function updateBuses() {
     try {
         const response = await fetch(`${BACKEND_URL}/buses`);
-        
+
         const serverStaleCount = response.headers.get('X-Stale-Count');
         const warningBtn = document.getElementById("warning-btn");
-        
+
         if (serverStaleCount && parseInt(serverStaleCount) >= 5) {
-             warningBtn.style.display = "flex";
+            warningBtn.style.display = "flex";
         } else {
-             warningBtn.style.display = "none";
+            warningBtn.style.display = "none";
         }
 
         const buses = await response.json();
@@ -337,7 +350,7 @@ async function updateBuses() {
 
                 const routeMeta = routeNames[bus.routeId] || {};
                 const vehicleType = getVehicleType(bus.routeId, routeMeta.type);
-                
+
                 // Filter by transit mode
                 if (selectedMode === 'bus' && vehicleType !== 'bus') return;
                 if (selectedMode === 'streetcar' && vehicleType !== 'streetcar') return;
@@ -385,7 +398,7 @@ async function updateBuses() {
                     marker.lastColor = badgeColor;
                     marker.bindPopup(popupContent);
                     marker.busData = bus;
-                    
+
                     // Auto-pan to vehicle's current position when clicked
                     marker.on('click', () => {
                         map.panTo(marker.getLatLng());
@@ -477,7 +490,7 @@ function createPopupContent(bus) {
         const routeNameStr = routeMeta.longName ? ` (${routeMeta.longName})` : '';
         const vehicleType = getVehicleType(bus.routeId, routeMeta.type);
         const typeTag = vehicleType === 'streetcar' ? '🚋' : (vehicleType === 'subway' ? '🚇' : '🚌');
-        
+
         let dirText = 'N/A';
         if (bus.directionId === 0) dirText = translations[currentLang].outbound;
         else if (bus.directionId === 1) dirText = translations[currentLang].inbound;
@@ -485,8 +498,8 @@ function createPopupContent(bus) {
         // Convert speed m/s to km/h safely
         const speedKmH = bus.speed ? Math.round(bus.speed * 3.6) : 0;
         const occupancyText = formatOccupancyText(bus.occupancyStatus);
-        const anticipatedNote = bus.isAnticipated 
-            ? `<div style="margin-top: 5px; font-size: 0.72rem; color: #FFC72C; font-weight: 600;">⚠️ ${translations[currentLang].anticipatedTag}</div>` 
+        const anticipatedNote = bus.isAnticipated
+            ? `<div style="margin-top: 5px; font-size: 0.72rem; color: #FFC72C; font-weight: 600;">⚠️ ${translations[currentLang].anticipatedTag}</div>`
             : '';
 
         return `
@@ -585,7 +598,7 @@ searchInput.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
     clearBtn.style.display = term ? 'block' : 'none';
     const items = document.querySelectorAll('.route-item');
-    
+
     items.forEach(item => {
         if (item.innerText.toLowerCase().includes(term)) {
             item.style.display = 'flex';
@@ -614,7 +627,7 @@ function applyRouteFilterChange() {
 
 function updateRouteDropdown(buses) {
     const activeRouteIds = new Set(buses.map(b => b.routeId));
-    
+
     // Determine if rebuild is needed
     let isDifferent = false;
     if (activeRouteIds.size !== availableRoutes.size) {
@@ -642,7 +655,7 @@ function updateRouteDropdown(buses) {
     sortedRoutes.forEach(routeId => {
         const item = document.createElement('div');
         item.className = 'route-item';
-        
+
         const routeMeta = routeNames[routeId] || {};
         const routeLongName = routeMeta.longName || '';
         const badgeColor = routeMeta.color || '#DA291C';
@@ -688,3 +701,51 @@ function updateRouteDropdown(buses) {
         routeList.appendChild(item);
     });
 }
+
+// --- HALIFAX AUTHOR EASTER EGG ---
+const halifaxIcon = L.divIcon({
+    className: 'halifax-easter-egg-wrapper',
+    html: `
+        <div style="font-size: 26px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); cursor: pointer; transition: transform 0.2s ease;">
+            ⛴️
+        </div>
+    `,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18]
+});
+
+function createHalifaxPopupContent() {
+    const t = translations[currentLang] || translations['en'];
+    return `
+        <div style="text-align: center; padding: 4px;">
+            <div style="font-size: 1.05rem; font-weight: 700; color: #FFC72C; margin-bottom: 6px;">${t.easterEggTitle}</div>
+            <div style="font-size: 0.85rem; margin-bottom: 10px; color: #ffffff;">${t.easterEggDesc}</div>
+            <a href="https://halifax-bus-tracker-psi.vercel.app/" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #00994C; color: #ffffff; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+                ${t.easterEggBtn}
+            </a>
+        </div>
+    `;
+}
+
+const halifaxMarker = L.marker([44.648, -63.591], { icon: halifaxIcon })
+    .bindPopup(createHalifaxPopupContent());
+
+function checkHalifaxEasterEgg() {
+    const zoom = map.getZoom();
+    const bounds = map.getBounds();
+    const isHalifaxInView = bounds.contains([44.648, -63.591]);
+    
+    // Only show when user pans over Halifax and zooms in (zoom >= 11)
+    if (zoom >= 11 && isHalifaxInView) {
+        if (!map.hasLayer(halifaxMarker)) {
+            map.addLayer(halifaxMarker);
+        }
+    } else {
+        if (map.hasLayer(halifaxMarker)) {
+            map.removeLayer(halifaxMarker);
+        }
+    }
+}
+
+map.on('zoomend moveend', checkHalifaxEasterEgg);
+checkHalifaxEasterEgg();
