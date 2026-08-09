@@ -570,25 +570,103 @@ body, html {
     border-radius: 50% !important;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
+/* Responsive adjustments for Mobile & Tablet Devices */
+@media (max-width: 768px) {
     #navbar {
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        justify-content: space-between;
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        padding: 6px 12px;
     }
+    
+    .nav-title {
+        font-size: 0.85rem;
+    }
+    
+    .ttc-badge {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+    
+    .live-count-badge {
+        font-size: 0.68rem;
+        padding: 2px 6px;
+    }
+
+    .lang-btn {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
+
     #search-container {
-        top: 65px;
-        left: 10px;
-        width: calc(100vw - 20px);
+        top: 56px;
+        left: 8px;
+        right: 8px;
+        width: auto;
+        max-width: calc(100% - 16px);
     }
+
+    .search-box {
+        height: 38px;
+        padding: 0 10px;
+    }
+
+    #route-search {
+        font-size: 0.82rem;
+    }
+
+    #mode-filters {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        gap: 4px;
+        padding-bottom: 2px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    #mode-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mode-btn {
+        padding: 4px 8px;
+        font-size: 0.72rem;
+        flex-shrink: 0;
+    }
+
+    #route-list {
+        max-height: 200px;
+    }
+
     #info {
-        bottom: 15px;
-        left: 10px;
+        bottom: 35px;
+        left: 8px;
+        max-width: calc(100vw - 75px);
+        padding: 6px 10px;
+        z-index: 999;
     }
-    #locate {
-        bottom: 15px;
-        right: 10px;
+
+    #txt-welcome {
+        font-size: 0.78rem;
+    }
+
+    #info p {
+        font-size: 0.7rem;
+    }
+
+    #map-controls {
+        bottom: 35px;
+        right: 8px;
+        gap: 6px;
+    }
+
+    #theme-btn, #locate-btn, #zoom-in-btn, #zoom-out-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+    }
+
+    .leaflet-control-attribution {
+        font-size: 0.62rem !important;
     }
 }
