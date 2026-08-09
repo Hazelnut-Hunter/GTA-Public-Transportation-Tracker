@@ -105,17 +105,17 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    width: 360px;
+    gap: 8px 12px;
+    width: fit-content;
     max-width: calc(100vw - 30px);
+    flex-wrap: wrap;
 }
 
 .nav-brand {
     display: flex;
     align-items: center;
     gap: 8px;
-    min-width: 0;
-    overflow: hidden;
+    flex-wrap: wrap;
 }
 
 .ttc-badge {
@@ -133,9 +133,9 @@ body, html {
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--text-main);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.25;
 }
 
 .nav-buttons {
@@ -145,6 +145,7 @@ body, html {
     padding: 3px;
     border-radius: 8px;
     flex-shrink: 0;
+    margin-left: auto;
 }
 
 .lang-btn {
@@ -593,25 +594,50 @@ body, html {
 
 /* Responsive adjustments for Mobile & Tablet Devices */
 @media (max-width: 768px) {
-    #navbar {
+    #top-panel {
         top: 8px;
         left: 8px;
         right: 8px;
-        padding: 6px 12px;
+        width: auto;
+        max-width: calc(100% - 16px);
     }
-    
+
+    #navbar {
+        width: 100%;
+        max-width: 100%;
+        padding: 6px 10px;
+        gap: 6px 10px;
+        flex-wrap: wrap;
+    }
+
+    .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        flex: 1;
+    }
+
     .nav-title {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
+        font-weight: 700;
+        white-space: normal;
+        line-height: 1.2;
     }
-    
+
     .ttc-badge {
         font-size: 0.65rem;
-        padding: 2px 6px;
+        padding: 2px 5px;
     }
-    
+
     .live-count-badge {
         font-size: 0.68rem;
-        padding: 2px 6px;
+        padding: 2px 5px;
+    }
+
+    .nav-buttons {
+        margin-left: auto;
+        padding: 2px;
     }
 
     .lang-btn {
@@ -620,11 +646,8 @@ body, html {
     }
 
     #search-container {
-        top: 56px;
-        left: 8px;
-        right: 8px;
-        width: auto;
-        max-width: calc(100% - 16px);
+        width: 100%;
+        max-width: 100%;
     }
 
     .search-box {
