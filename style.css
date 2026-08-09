@@ -78,27 +78,44 @@ body, html {
     color: var(--text-main);
 }
 
-/* Navbar Header */
-#navbar {
+/* Unified Top Control Panel (Navbar + Search & Mode Filters) */
+#top-panel {
     position: absolute;
     top: 15px;
     left: 15px;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+#top-panel > * {
+    pointer-events: auto;
+}
+
+/* Navbar Header */
+#navbar {
     background: var(--dark-surface-translucent);
     backdrop-filter: blur(12px);
     border: 1px solid var(--dark-border);
-    padding: 10px 18px;
+    padding: 8px 14px;
     border-radius: 12px;
     box-shadow: var(--shadow-lg);
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: space-between;
+    gap: 12px;
+    width: 360px;
+    max-width: calc(100vw - 30px);
 }
 
 .nav-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .ttc-badge {
@@ -106,32 +123,37 @@ body, html {
     color: #fff;
     font-weight: 900;
     font-size: 0.85rem;
-    padding: 4px 8px;
+    padding: 3px 7px;
     border-radius: 6px;
     letter-spacing: 1px;
+    flex-shrink: 0;
 }
 
 .nav-title {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nav-buttons {
     display: flex;
-    gap: 5px;
+    gap: 4px;
     background: rgba(0, 0, 0, 0.3);
     padding: 3px;
     border-radius: 8px;
+    flex-shrink: 0;
 }
 
 .lang-btn {
     background: transparent;
     border: none;
     color: var(--text-muted);
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: 6px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -144,12 +166,11 @@ body, html {
 
 /* Search Container */
 #search-container {
-    position: absolute;
-    top: 75px;
-    left: 15px;
-    z-index: 1000;
-    width: 320px;
+    width: 360px;
     max-width: calc(100vw - 30px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .search-box {
