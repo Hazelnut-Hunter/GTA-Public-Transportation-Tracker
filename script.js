@@ -203,15 +203,17 @@ function toggleMapTheme() {
     MAP_THEMES[currentTheme].addTo(map);
 }
 
-// High-Performance Marker Cluster Group with Async Chunked Loading
+// High-Performance Marker Cluster Group with Async Chunked Loading & Viewport Culling
 const markerClusterGroup = L.markerClusterGroup({
     chunkedLoading: true,
-    chunkInterval: 50,
+    chunkInterval: 100,
     chunkDelay: 10,
     maxClusterRadius: 45,
     disableClusteringAtZoom: 15,
     spiderfyOnMaxZoom: true,
-    showCoverageOnHover: false
+    showCoverageOnHover: false,
+    removeOutsideVisibleBounds: true,
+    animateAddingMarkers: false
 });
 map.addLayer(markerClusterGroup);
 
@@ -367,11 +369,20 @@ async function updateBuses() {
                 if (busMarkers[bus.id]) {
                     const marker = busMarkers[bus.id];
                     marker.setLatLng([bus.latitude, bus.longitude]);
-                    marker.setIcon(customIcon);
-                    marker.getPopup().setContent(popupContent);
+                    // Recycle DOM element: only re-create icon if bearing or color changed
+                    if (marker.lastBearing !== bus.bearing || marker.lastColor !== badgeColor) {
+                        marker.setIcon(customIcon);
+                        marker.lastBearing = bus.bearing;
+                        marker.lastColor = badgeColor;
+                    }
+                    if (marker.isPopupOpen()) {
+                        marker.getPopup().setContent(popupContent);
+                    }
                     marker.busData = bus;
                 } else {
                     const marker = L.marker([bus.latitude, bus.longitude], { icon: customIcon });
+                    marker.lastBearing = bus.bearing;
+                    marker.lastColor = badgeColor;
                     marker.bindPopup(popupContent);
                     marker.busData = bus;
                     

@@ -440,10 +440,13 @@ body, html {
     margin-right: 15px;
 }
 
-/* Custom Marker Styling */
+/* Custom Marker Styling (GPU Accelerated) */
 .custom-bus-icon-wrapper {
     background: transparent;
     border: none;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
 }
 
 .bus-marker-container {
