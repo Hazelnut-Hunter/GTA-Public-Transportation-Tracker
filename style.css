@@ -182,19 +182,20 @@ body, html {
     width: 100%;
 }
 
-/* Primary Agency Filters (Show all at once, flex-wrap) */
+/* Primary Agency Filters (Single Line Row) */
 #agency-filters {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 4px;
     width: 100%;
+    overflow: hidden;
 }
 
 .agency-btn {
-    padding: 5px 9px;
+    padding: 5px 6px;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     border: 1px solid var(--dark-border);
     background: var(--dark-surface-translucent);
     backdrop-filter: blur(12px);
@@ -202,8 +203,11 @@ body, html {
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s ease;
-    flex: 1 1 auto;
+    flex: 1 1 0px;
+    min-width: 0;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .agency-btn:hover {
@@ -265,10 +269,12 @@ body, html {
     color: #ffffff;
 }
 
-/* Custom Vehicle Markers with Bold SVG Directional Arrows */
+/* Custom Vehicle Markers with Dead-Center GPS Anchor Alignment */
 .bus-marker-container {
     background: transparent !important;
     border: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 .custom-vehicle-marker {
@@ -276,13 +282,18 @@ body, html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     cursor: pointer;
     filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+    white-space: nowrap;
+    pointer-events: auto;
 }
 
 .custom-vehicle-marker:hover {
-    transform: scale(1.15);
+    transform: translate(-50%, -50%) scale(1.15);
     z-index: 99999 !important;
 }
 

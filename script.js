@@ -476,9 +476,9 @@ async function updateBuses() {
                     const customIcon = L.divIcon({
                         className: 'bus-marker-container',
                         html: createVehicleIconHtml(bus, vType),
-                        iconSize: [44, 44],
-                        iconAnchor: [22, 22],
-                        popupAnchor: [0, -22]
+                        iconSize: [0, 0],
+                        iconAnchor: [0, 0],
+                        popupAnchor: [0, -18]
                     });
 
                     const marker = L.marker(newLatLng, { icon: customIcon });
