@@ -326,6 +326,24 @@ function setAgencyFilter(agency) {
 
 function setModeFilter(mode) {
     selectedMode = mode;
+
+    // Smart Deselection: Auto-unselect routes in selectedRoutes that do NOT match the newly selected mode
+    if (selectedMode !== 'all' && selectedRoutes.size > 0 && currentBusData.length > 0) {
+        const matchingRoutes = new Set(
+            currentBusData
+                .filter(b => (selectedAgency === 'all' || b.agency === selectedAgency) && getVehicleType(b) === selectedMode)
+                .map(b => b.routeId)
+        );
+
+        selectedRoutes.forEach(rId => {
+            if (!matchingRoutes.has(rId)) {
+                selectedRoutes.delete(rId);
+            }
+        });
+    }
+
+    availableRoutes.clear();
+    updateRouteDropdown(currentBusData);
     applyRouteFilterChange();
 }
 

@@ -87,6 +87,8 @@ body, html {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: 380px;
+    max-width: calc(100vw - 30px);
     pointer-events: none;
 }
 
@@ -97,18 +99,17 @@ body, html {
 /* Navbar Header */
 #navbar {
     background: var(--dark-surface-translucent);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
     border: 1px solid var(--dark-border);
-    padding: 8px 14px;
+    padding: 8px 12px;
     border-radius: 12px;
     box-shadow: var(--shadow-lg);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px 12px;
-    width: fit-content;
-    max-width: calc(100vw - 30px);
-    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .nav-brand {
