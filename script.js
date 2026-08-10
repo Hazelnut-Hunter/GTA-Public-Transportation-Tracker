@@ -1,32 +1,39 @@
 // Multi-Language Dictionary
 const translations = {
     en: {
-        navTitle: "TTC Live Vehicle Tracker",
-        welcome: "Toronto Transit Commission Tracker",
+        navTitle: "GTA Live Transit Tracker",
+        welcome: "Greater Toronto Area Transit Tracker",
         timeLabel: "Current Time:",
         loading: "Loading...",
-        errorTitle: "TTC Feed Warning",
-        errorMessage: "We are currently experiencing delays receiving live vehicle updates from the TTC feed. Map positions may temporarily be delayed.",
-        serverWaking: "Connecting to TTC Server...\n(Free server cold start may take ~20s on initial load)",
+        errorTitle: "GTA Feed Warning",
+        errorMessage: "We are experiencing minor delays receiving live transit updates from the GTA feed. Map positions may temporarily be delayed.",
+        serverWaking: "Connecting to GTA Transit Servers...\n(Free server cold start may take ~20s on initial load)",
         routeLabel: "Route",
         busLabel: "Vehicle ID",
+        agencyLabel: "Agency",
         locationPopup: "You are here",
         locationNotSupportedAlert: "Geolocation is not supported by your browser.",
         locationAlert: "Unable to retrieve your position. Please check your location permissions.",
-        searchPlaceholder: "Search Route (e.g. 1, 501, 96)...",
+        searchPlaceholder: "Search Route (e.g. 1, 501, LW, UP)...",
         dirLabel: "Direction",
         inbound: "Inbound",
         outbound: "Outbound",
         speedLabel: "Speed",
         occupancyLabel: "Occupancy",
         vehicleType: "Vehicle Type",
+        agencyAll: "🌐 All Agencies",
+        agencyTtc: "🔴 TTC",
+        agencyGo: "🟢 GO Transit",
+        agencyUp: "🚆 UP Express",
         bus: "Bus",
         streetcar: "Streetcar",
         subway: "Subway",
-        modeAll: "🌐 All",
+        train: "Train",
+        modeAll: "🌐 All Modes",
         modeBus: "🚌 Bus",
-        modeStreetcar: "🚋 Streetcar",
+        modeStreetcar: "`🚋 Streetcar",
         modeSubway: "🚇 Subway",
+        modeTrain: "🚆 Train",
         liveCountTag: "Live",
         anticipatedTag: "Anticipated Location (Schedule Interpolated)",
         themeTooltip: "Switch Map Theme (Dark / Street / Satellite)",
@@ -36,32 +43,39 @@ const translations = {
         easterEggBtn: "🚌 Visit Halifax Bus Tracker →"
     },
     fr: {
-        navTitle: "Info-Véhicules TTC",
-        welcome: "Suivi en direct de la TTC (Toronto)",
+        navTitle: "Suivi du Transit GTA",
+        welcome: "Suivi du réseau de transport de la région de Toronto (GTA)",
         timeLabel: "Heure actuelle:",
         loading: "Chargement...",
-        errorTitle: "Avertissement Flux TTC",
-        errorMessage: "Des retards sont actuellement observés dans la réception des données TTC en temps réel. Les positions affichées peuvent être retardées.",
-        serverWaking: "Connexion au serveur TTC...\n(Le premier chargement peut prendre ~20s pour démarrer le serveur gratuit)",
+        errorTitle: "Avertissement Flux GTA",
+        errorMessage: "Des retards sont actuellement observés dans la réception des données en temps réel. Les positions affichées peuvent être retardées.",
+        serverWaking: "Connexion aux serveurs de transit GTA...\n(Le premier chargement peut prendre ~20s pour démarrer le serveur)",
         routeLabel: "Ligne",
         busLabel: "ID Véhicule",
+        agencyLabel: "Agence",
         locationPopup: "Vous êtes ici",
         locationNotSupportedAlert: "La géolocalisation n'est pas supportée par votre navigateur.",
         locationAlert: "Impossible de récupérer votre position. Vérifiez les autorisations.",
-        searchPlaceholder: "Chercher un itinéraire (ex. 1, 501, 96)...",
+        searchPlaceholder: "Chercher un itinéraire (ex. 1, 501, LW, UP)...",
         dirLabel: "Direction",
         inbound: "Aller",
         outbound: "Retour",
         speedLabel: "Vitesse",
         occupancyLabel: "Occupation",
         vehicleType: "Type de véhicule",
+        agencyAll: "🌐 Toutes Agences",
+        agencyTtc: "🔴 TTC",
+        agencyGo: "🟢 GO Transit",
+        agencyUp: "🚆 UP Express",
         bus: "Autobus",
         streetcar: "Tramway",
         subway: "Métro",
-        modeAll: "🌐 Tous",
+        train: "Train",
+        modeAll: "🌐 Tous les Modes",
         modeBus: "🚌 Autobus",
         modeStreetcar: "🚋 Tramway",
         modeSubway: "🚇 Métro",
+        modeTrain: "🚆 Train",
         liveCountTag: "En direct",
         anticipatedTag: "Emplacement estimé (selon l'horaire)",
         themeTooltip: "Changer le thème de la carte (Sombre / Rue / Satellite)",
@@ -71,32 +85,39 @@ const translations = {
         easterEggBtn: "🚌 Découvrir Halifax Bus Tracker →"
     },
     zh: {
-        navTitle: "多伦多TTC实时公交追踪器",
-        welcome: "感谢使用多伦多TTC车辆实时追踪器!",
+        navTitle: "大多伦多(GTA)公共交通实时追踪器",
+        welcome: "大多伦多地区 (GTA) 公共交通实时追踪器",
         timeLabel: "当前时间：",
         loading: "加载中...",
-        errorTitle: "TTC数据源提示",
-        errorMessage: "当前接收TTC实时位置数据存在延迟，地图上的车辆位置可能会有短暂滞后。",
-        serverWaking: "正在连接TTC服务器...\n(提示: 免费云服务器首次启动需约20秒唤醒，请稍候)",
+        errorTitle: "GTA数据源提示",
+        errorMessage: "当前接收GTA交通实时位置数据存在延迟，地图上的车辆位置可能会有短暂滞后。",
+        serverWaking: "正在连接GTA交通服务器...\n(提示: 免费云服务器首次启动需约20秒唤醒，请稍候)",
         routeLabel: "线路",
         busLabel: "车辆 ID",
+        agencyLabel: "公交公司",
         locationPopup: "您在这里",
         locationNotSupportedAlert: "您的浏览器不支持地理位置功能。",
         locationAlert: "无法获取您的位置，请检查浏览器定位权限。",
-        searchPlaceholder: "搜索线路 (如 1, 501, 96)...",
+        searchPlaceholder: "搜索线路 (如 1, 501, LW, UP)...",
         dirLabel: "方向",
         inbound: "上行",
         outbound: "下行",
         speedLabel: "车速",
         occupancyLabel: "载客情况",
         vehicleType: "车辆类型",
+        agencyAll: "🌐 所有公司",
+        agencyTtc: "🔴 TTC 多伦多公局",
+        agencyGo: "🟢 GO 区域城铁/巴士",
+        agencyUp: "🚆 UP 机场快线",
         bus: "公交车",
         streetcar: "有轨电车",
         subway: "地铁",
-        modeAll: "🌐 全部",
+        train: "火车/城铁",
+        modeAll: "🌐 全部模式",
         modeBus: "🚌 公交车",
         modeStreetcar: "🚋 有轨电车",
         modeSubway: "🚇 地铁",
+        modeTrain: "🚆 火车/城铁",
         liveCountTag: "辆在途",
         anticipatedTag: "预计实时位置 (时刻表推算)",
         themeTooltip: "切换地图主题 (暗黑 / 标准 / 卫星)",
@@ -128,37 +149,41 @@ function setLanguage(lang) {
         btn.classList.toggle('active', btn.textContent.toLowerCase() === lang || (lang === 'zh' && btn.textContent === '中文'));
     });
 
-    document.getElementById('txt-nav-title').textContent = translations[lang].navTitle;
-    document.getElementById('txt-welcome').textContent = translations[lang].welcome;
-    document.getElementById('txt-time').textContent = translations[lang].timeLabel;
-    document.getElementById('txt-loading-msg').textContent = translations[lang].serverWaking;
-    document.getElementById('route-search').placeholder = translations[lang].searchPlaceholder;
+    const t = translations[lang];
+    document.getElementById('txt-nav-title').textContent = t.navTitle;
+    document.getElementById('txt-welcome').textContent = t.welcome;
+    document.getElementById('txt-time').textContent = t.timeLabel;
+    document.getElementById('txt-loading-msg').textContent = t.serverWaking;
+    document.getElementById('route-search').placeholder = t.searchPlaceholder;
 
-    // Update Mode Filter buttons text
-    const btnAll = document.getElementById('btn-mode-all');
-    const btnBus = document.getElementById('btn-mode-bus');
-    const btnStreetcar = document.getElementById('btn-mode-streetcar');
-    const btnSubway = document.getElementById('btn-mode-subway');
-    if (btnAll) btnAll.textContent = translations[lang].modeAll;
-    if (btnBus) btnBus.textContent = translations[lang].modeBus;
-    if (btnStreetcar) btnStreetcar.textContent = translations[lang].modeStreetcar;
-    if (btnSubway) btnSubway.textContent = translations[lang].modeSubway;
+    // Update Primary Agency Filter buttons text
+    const btnAgAll = document.getElementById('btn-agency-all');
+    const btnAgTtc = document.getElementById('btn-agency-ttc');
+    const btnAgGo = document.getElementById('btn-agency-go');
+    const btnAgUp = document.getElementById('btn-agency-up');
+    if (btnAgAll) btnAgAll.textContent = t.agencyAll;
+    if (btnAgTtc) btnAgTtc.textContent = t.agencyTtc;
+    if (btnAgGo) btnAgGo.textContent = t.agencyGo;
+    if (btnAgUp) btnAgUp.textContent = t.agencyUp;
+
+    // Re-render secondary mode filter pills
+    renderModeFilters();
 
     // Update Tooltips
     const themeBtn = document.getElementById('theme-btn');
     const locateBtn = document.getElementById('locate-btn');
-    if (themeBtn) themeBtn.title = translations[lang].themeTooltip;
-    if (locateBtn) locateBtn.title = translations[lang].locateTooltip;
+    if (themeBtn) themeBtn.title = t.themeTooltip;
+    if (locateBtn) locateBtn.title = t.locateTooltip;
 
     if (userMarker) {
-        userMarker.setPopupContent(translations[lang].locationPopup);
+        userMarker.setPopupContent(t.locationPopup);
     }
 
-    if (halifaxMarker && halifaxMarker.getPopup()) {
+    if (typeof halifaxMarker !== 'undefined' && halifaxMarker && halifaxMarker.getPopup()) {
         halifaxMarker.getPopup().setContent(createHalifaxPopupContent());
     }
 
-    // Refresh existing bus popups with new language labels
+    // Refresh existing vehicle popups with new language labels
     Object.values(busMarkers).forEach(marker => {
         if (marker.busData) {
             marker.getPopup().setContent(createPopupContent(marker.busData));
@@ -184,27 +209,27 @@ function updateTime() {
 updateTime();
 setInterval(updateTime, 1000);
 
-// Initialize Map Centered on Toronto (Custom right-side button stack handles zooming)
+// Initialize Map Centered on Toronto
 const map = L.map('map', {
     zoomControl: false
-}).setView([43.6532, -79.3832], 13);
+}).setView([43.6532, -79.3832], 12);
 
-// --- MAP THEMES (Street Light, Dark, Satellite) ---
+// --- MAP THEMES ---
 const MAP_THEMES = {
     street: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors | TTC Data'
+        attribution: '&copy; OpenStreetMap contributors | GTA Transit Data'
     }),
     dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO | TTC Data',
+        attribution: '&copy; OpenStreetMap &copy; CARTO | GTA Transit Data',
         subdomains: 'abcd',
         maxZoom: 19
     }),
     satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS | TTC Data'
+        attribution: 'Tiles &copy; Esri | GTA Transit Data'
     })
 };
 
-let currentTheme = 'street'; // Default to Light Color map
+let currentTheme = 'street';
 MAP_THEMES[currentTheme].addTo(map);
 
 function toggleMapTheme() {
@@ -216,7 +241,7 @@ function toggleMapTheme() {
     MAP_THEMES[currentTheme].addTo(map);
 }
 
-// High-Performance Marker Cluster Group with Async Chunked Loading & Viewport Culling
+// Marker Cluster Group
 const markerClusterGroup = L.markerClusterGroup({
     chunkedLoading: true,
     chunkInterval: 100,
@@ -233,10 +258,7 @@ map.addLayer(markerClusterGroup);
 let isSpiderfied = false;
 let pendingClusterUpdates = false;
 
-markerClusterGroup.on('spiderfied', () => {
-    isSpiderfied = true;
-});
-
+markerClusterGroup.on('spiderfied', () => { isSpiderfied = true; });
 markerClusterGroup.on('unspiderfied', () => {
     isSpiderfied = false;
     if (pendingClusterUpdates) {
@@ -247,21 +269,72 @@ markerClusterGroup.on('unspiderfied', () => {
 
 let busMarkers = {};
 let selectedRoutes = new Set();
-let selectedMode = 'all'; // 'all', 'bus', 'streetcar', 'subway'
+let selectedAgency = 'all'; // 'all', 'ttc', 'go', 'up'
+let selectedMode = 'all';   // 'all', 'bus', 'streetcar', 'subway', 'train'
 let availableRoutes = new Set();
 let currentBusData = [];
-let routeNames = {}; // Stores routeId -> { name, shortName, type, color, textColor }
+let routeNames = {};
+
+const AGENCY_MODES = {
+    all: ['all', 'bus', 'streetcar', 'subway', 'train'],
+    ttc: ['all', 'bus', 'streetcar', 'subway'],
+    go: ['all', 'bus', 'train'],
+    up: ['all', 'train']
+};
+
+function setAgencyFilter(agency) {
+    selectedAgency = agency;
+    
+    document.querySelectorAll('.agency-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.id === `btn-agency-${agency}`);
+    });
+
+    const allowed = AGENCY_MODES[agency] || AGENCY_MODES['all'];
+    if (!allowed.includes(selectedMode)) {
+        selectedMode = 'all';
+    }
+
+    renderModeFilters();
+    applyRouteFilterChange();
+}
 
 function setModeFilter(mode) {
     selectedMode = mode;
     document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.id === `btn-mode-${mode}`);
+        btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
     });
     applyRouteFilterChange();
 }
 
-// --- FAVORITES SYSTEM ---
-const FAV_STORAGE_KEY = "gta_ttc_favs";
+function renderModeFilters() {
+    const container = document.getElementById('mode-filters');
+    if (!container) return;
+
+    const allowed = AGENCY_MODES[selectedAgency] || AGENCY_MODES['all'];
+    const t = translations[currentLang] || translations['en'];
+
+    const MODE_MAP = {
+        all: t.modeAll || '🌐 All Modes',
+        bus: t.modeBus || '🚌 Bus',
+        streetcar: t.modeStreetcar || '🚋 Streetcar',
+        subway: t.modeSubway || '🚇 Subway',
+        train: t.modeTrain || '🚆 Train'
+    };
+
+    container.innerHTML = allowed.map(m => `
+        <button class="mode-btn ${selectedMode === m ? 'active' : ''}" 
+                onclick="setModeFilter('${m}')" 
+                data-mode="${m}">
+            ${MODE_MAP[m]}
+        </button>
+    `).join('');
+}
+
+// Initial mode filter render
+renderModeFilters();
+
+// Favorites System
+const FAV_STORAGE_KEY = "gta_transit_favs";
 
 function getFavorites() {
     return new Set(JSON.parse(localStorage.getItem(FAV_STORAGE_KEY)) || []);
@@ -283,10 +356,12 @@ function toggleFavorite(routeId, event) {
 const STREETCAR_ROUTES = new Set(['501', '503', '504', '505', '506', '507', '509', '510', '511', '512', '301', '304', '306', '310']);
 const SUBWAY_ROUTES = new Set(['1', '2', '4', '5', '6']);
 
-function getVehicleType(routeId, routeMetaType) {
-    const rId = String(routeId);
-    if (SUBWAY_ROUTES.has(rId) || String(routeMetaType) === '1') return 'subway';
-    if (STREETCAR_ROUTES.has(rId) || String(routeMetaType) === '0') return 'streetcar';
+function getVehicleType(bus) {
+    if (bus.type) return bus.type;
+    const rId = String(bus.routeId);
+    if (bus.agency === 'up' || ['LW','LE','MI','KI','BR','ST','RH'].includes(rId)) return 'train';
+    if (SUBWAY_ROUTES.has(rId)) return 'subway';
+    if (STREETCAR_ROUTES.has(rId)) return 'streetcar';
     return 'bus';
 }
 
@@ -298,7 +373,7 @@ function showErrorDetail() {
 
 let isFirstLoad = true;
 
-// --- BUS DATA UPDATER ---
+// Bus Data Updater
 async function updateBuses() {
     try {
         const response = await fetch(`${BACKEND_URL}/buses`);
@@ -323,7 +398,6 @@ async function updateBuses() {
 
         updateRouteDropdown(buses);
 
-        // If a spiderfied cluster is expanded by user, defer structural cluster re-draws so view isn't interrupted
         if (isSpiderfied) {
             pendingClusterUpdates = true;
             buses.forEach(bus => {
@@ -339,67 +413,62 @@ async function updateBuses() {
 
         const activeBusIds = new Set();
         const markersToAdd = [];
-        const markersToRemove = [];
 
         buses.forEach(bus => {
             try {
-                // Filter by route search selection
+                // Filter by Agency
+                if (selectedAgency !== 'all' && bus.agency !== selectedAgency) {
+                    return;
+                }
+
+                // Filter by Mode
+                const vType = getVehicleType(bus);
+                if (selectedMode !== 'all' && vType !== selectedMode) {
+                    return;
+                }
+
+                // Filter by Route selection
                 if (selectedRoutes.size > 0 && !selectedRoutes.has(bus.routeId)) {
                     return;
                 }
 
-                const routeMeta = routeNames[bus.routeId] || {};
-                const vehicleType = getVehicleType(bus.routeId, routeMeta.type);
-
-                // Filter by transit mode
-                if (selectedMode === 'bus' && vehicleType !== 'bus') return;
-                if (selectedMode === 'streetcar' && vehicleType !== 'streetcar') return;
-                if (selectedMode === 'subway' && vehicleType !== 'subway') return;
-
                 activeBusIds.add(bus.id);
-
-                const badgeColor = routeMeta.color || (vehicleType === 'streetcar' ? '#DA291C' : (vehicleType === 'subway' ? '#FFC72C' : '#DA291C'));
-                const badgeTextColor = routeMeta.textColor || '#FFFFFF';
-
-                const customIcon = L.divIcon({
-                    className: 'custom-bus-icon-wrapper',
-                    html: `
-                        <div class="bus-marker-container">
-                            <div class="arrow-orbit" style="transform: rotate(${bus.bearing}deg);">
-                                <div class="bus-arrow" style="border-bottom-color: ${badgeColor};"></div>
-                            </div>
-                            <div class="bus-box" style="background-color: ${badgeColor}; color: ${badgeTextColor};">
-                                ${bus.routeId}
-                            </div>
-                        </div>
-                    `,
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 16]
-                });
-
-                const popupContent = createPopupContent(bus);
+                const newLatLng = [bus.latitude, bus.longitude];
 
                 if (busMarkers[bus.id]) {
                     const marker = busMarkers[bus.id];
-                    marker.setLatLng([bus.latitude, bus.longitude]);
-                    // Recycle DOM element: only re-create icon if bearing or color changed
-                    if (marker.lastBearing !== bus.bearing || marker.lastColor !== badgeColor) {
-                        marker.setIcon(customIcon);
-                        marker.lastBearing = bus.bearing;
-                        marker.lastColor = badgeColor;
-                    }
-                    if (marker.isPopupOpen()) {
-                        marker.getPopup().setContent(popupContent);
-                    }
-                    marker.busData = bus;
-                } else {
-                    const marker = L.marker([bus.latitude, bus.longitude], { icon: customIcon });
-                    marker.lastBearing = bus.bearing;
-                    marker.lastColor = badgeColor;
-                    marker.bindPopup(popupContent);
                     marker.busData = bus;
 
-                    // Auto-pan to vehicle's current position when clicked
+                    const curLatLng = marker.getLatLng();
+                    if (Math.abs(curLatLng.lat - bus.latitude) > 0.00005 || Math.abs(curLatLng.lng - bus.longitude) > 0.00005) {
+                        marker.setLatLng(newLatLng);
+                    }
+
+                    const iconDiv = marker.getElement();
+                    if (iconDiv) {
+                        const vehicleIcon = iconDiv.querySelector('.custom-vehicle-marker');
+                        if (vehicleIcon) {
+                            vehicleIcon.style.transform = `rotate(${bus.bearing || 0}deg)`;
+                        }
+                    }
+
+                    if (marker.getPopup() && marker.getPopup().isOpen()) {
+                        marker.getPopup().setContent(createPopupContent(bus));
+                    }
+
+                } else {
+                    const customIcon = L.divIcon({
+                        className: 'bus-marker-container',
+                        html: createVehicleIconHtml(bus, vType),
+                        iconSize: [40, 40],
+                        iconAnchor: [20, 20],
+                        popupAnchor: [0, -20]
+                    });
+
+                    const marker = L.marker(newLatLng, { icon: customIcon });
+                    marker.busData = bus;
+                    marker.bindPopup(createPopupContent(bus));
+
                     marker.on('click', () => {
                         map.panTo(marker.getLatLng());
                     });
@@ -408,139 +477,127 @@ async function updateBuses() {
                     markersToAdd.push(marker);
                 }
             } catch (err) {
-                console.warn(`Error processing bus ${bus.id}:`, err);
+                console.error("Error processing vehicle marker:", err);
             }
         });
 
-        // Update live count badge
-        const countBadge = document.getElementById('live-count-badge');
-        if (countBadge) {
-            countBadge.textContent = `${activeBusIds.size.toLocaleString()} ${translations[currentLang].liveCountTag}`;
-        }
+        // Remove stale/filtered markers
+        Object.keys(busMarkers).forEach(busId => {
+            if (!activeBusIds.has(busId)) {
+                markerClusterGroup.removeLayer(busMarkers[busId]);
+                delete busMarkers[busId];
+            }
+        });
 
-        // Batch add new markers
         if (markersToAdd.length > 0) {
             markerClusterGroup.addLayers(markersToAdd);
         }
 
-        // Identify and remove inactive markers
-        Object.keys(busMarkers).forEach(id => {
-            if (!activeBusIds.has(id)) {
-                markersToRemove.push(busMarkers[id]);
-                delete busMarkers[id];
-            }
-        });
-
-        if (markersToRemove.length > 0) {
-            markerClusterGroup.removeLayers(markersToRemove);
+        const countBadge = document.getElementById('live-count-badge');
+        if (countBadge) {
+            countBadge.textContent = `${activeBusIds.size} ${translations[currentLang].liveCountTag}`;
         }
 
     } catch (error) {
-        console.error("Error loading TTC bus data:", error);
-        document.getElementById("warning-btn").style.display = "flex";
+        console.error("Error updating vehicle positions:", error);
     }
 }
 
-const occupancyTranslations = {
-    en: {
-        "EMPTY": "Empty",
-        "MANY SEATS AVAILABLE": "Many Seats Available",
-        "FEW SEATS AVAILABLE": "Few Seats Available",
-        "STANDING ROOM ONLY": "Standing Room Only",
-        "CRUSHED STANDING ROOM ONLY": "Crowded Standing",
-        "FULL": "Full",
-        "NOT ACCEPTING PASSENGERS": "Not Accepting Passengers"
-    },
-    fr: {
-        "EMPTY": "Vide",
-        "MANY SEATS AVAILABLE": "Plusieurs places assises",
-        "FEW SEATS AVAILABLE": "Peu de places assises",
-        "STANDING ROOM ONLY": "Places debout seulement",
-        "CRUSHED STANDING ROOM ONLY": "Debout très rempli",
-        "FULL": "Complet",
-        "NOT ACCEPTING PASSENGERS": "Ne prend pas de passagers"
-    },
-    zh: {
-        "EMPTY": "空车",
-        "MANY SEATS AVAILABLE": "较多空座",
-        "FEW SEATS AVAILABLE": "少量空座",
-        "STANDING ROOM ONLY": "仅剩站位",
-        "CRUSHED STANDING ROOM ONLY": "拥挤站位",
-        "FULL": "爆满",
-        "NOT ACCEPTING PASSENGERS": "暂不载客"
-    }
-};
+function createVehicleIconHtml(bus, vType) {
+    let emoji = '🚌';
+    let badgeColor = '#DA291C';
+    let textColor = '#FFFFFF';
 
-function formatOccupancyText(status) {
-    if (!status || status === 'N/A') return 'N/A';
-    const key = String(status).toUpperCase().replace(/_/g, ' ').trim();
-    const langDict = occupancyTranslations[currentLang] || occupancyTranslations['en'];
-    return langDict[key] || String(status).replace(/_/g, ' ');
+    if (bus.agency === 'go') {
+        badgeColor = '#00853D';
+        emoji = (vType === 'train') ? '🚆' : '🚌';
+    } else if (bus.agency === 'up') {
+        badgeColor = '#004B49';
+        textColor = '#D4AF37';
+        emoji = '🚆';
+    } else {
+        if (vType === 'streetcar') {
+            badgeColor = '#DA291C';
+            emoji = '🚋';
+        } else if (vType === 'subway') {
+            const meta = routeNames[bus.routeId];
+            badgeColor = meta ? meta.color : '#FFC72C';
+            textColor = meta ? meta.textColor : '#000000';
+            emoji = '🚇';
+        }
+    }
+
+    const routeLabel = String(bus.routeId).length <= 4 ? bus.routeId : String(bus.routeId).slice(0, 4);
+
+    return `
+        <div class="custom-vehicle-marker agency-${bus.agency}" style="transform: rotate(${bus.bearing || 0}deg);">
+            <div class="marker-pill" style="background-color: ${badgeColor}; color: ${textColor};">
+                <span class="marker-emoji">${emoji}</span>
+                <span class="marker-route">${routeLabel}</span>
+            </div>
+        </div>
+    `;
 }
 
 function createPopupContent(bus) {
-    try {
-        const routeLabel = translations[currentLang].routeLabel;
-        const busLabel = translations[currentLang].busLabel;
-        const dirLabel = translations[currentLang].dirLabel;
-        const speedLabel = translations[currentLang].speedLabel;
-        const occupancyLabel = translations[currentLang].occupancyLabel;
+    const t = translations[currentLang];
 
-        const routeMeta = routeNames[bus.routeId] || {};
-        const routeNameStr = routeMeta.longName ? ` (${routeMeta.longName})` : '';
-        const vehicleType = getVehicleType(bus.routeId, routeMeta.type);
-        const typeTag = vehicleType === 'streetcar' ? '🚋' : (vehicleType === 'subway' ? '🚇' : '🚌');
+    let agencyName = 'TTC';
+    let agencyBadgeColor = '#DA291C';
+    let agencyBadgeTextColor = '#FFFFFF';
 
-        let dirText = 'N/A';
-        if (bus.directionId === 0) dirText = translations[currentLang].outbound;
-        else if (bus.directionId === 1) dirText = translations[currentLang].inbound;
-
-        // Convert speed m/s to km/h safely
-        const speedKmH = bus.speed ? Math.round(bus.speed * 3.6) : 0;
-        const occupancyText = formatOccupancyText(bus.occupancyStatus);
-        const anticipatedNote = bus.isAnticipated
-            ? `<div style="margin-top: 5px; font-size: 0.72rem; color: #FFC72C; font-weight: 600;">⚠️ ${translations[currentLang].anticipatedTag}</div>`
-            : '';
-
-        return `
-            <div class="popup-card">
-                <div class="popup-title">
-                    <span>${routeLabel} ${bus.routeId}</span>
-                    <span class="popup-tag">${typeTag}</span>
-                </div>
-                <div>${routeNameStr}</div>
-                <div><b>${busLabel}:</b> ${bus.id}</div>
-                <div><b>${dirLabel}:</b> ${dirText}</div>
-                <div><b>${speedLabel}:</b> ${speedKmH} km/h</div>
-                <div><b>${occupancyLabel}:</b> ${occupancyText}</div>
-                ${anticipatedNote}
-            </div>
-        `;
-    } catch (e) {
-        return `<b>Vehicle ${bus.id}</b> (Route ${bus.routeId})`;
+    if (bus.agency === 'go') {
+        agencyName = 'GO Transit';
+        agencyBadgeColor = '#00853D';
+    } else if (bus.agency === 'up') {
+        agencyName = 'UP Express';
+        agencyBadgeColor = '#004B49';
+        agencyBadgeTextColor = '#D4AF37';
     }
+
+    const routeMeta = routeNames[bus.routeId];
+    const routeName = routeMeta ? (routeMeta.longName || routeMeta.shortName || bus.routeId) : bus.routeId;
+    const vType = getVehicleType(bus);
+    const vTypeLabel = t[vType] || vType;
+    const speedKmH = Math.round((bus.speed || 0) * 3.6);
+    const occupancy = bus.occupancyStatus ? (t[bus.occupancyStatus] || bus.occupancyStatus) : 'N/A';
+    const tagText = bus.isAnticipated ? t.anticipatedTag : t.liveCountTag;
+
+    return `
+        <div class="popup-card">
+            <div class="popup-title">
+                <span class="popup-badge" style="background-color: ${agencyBadgeColor}; color: ${agencyBadgeTextColor}; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 0.75rem;">
+                    ${agencyName}
+                </span>
+                <span style="font-weight: 700; color: #ffffff;">${t.routeLabel} ${bus.routeId}</span>
+            </div>
+            <div style="font-size: 0.75rem; color: #cbd5e1; margin-top: 2px; margin-bottom: 6px;">
+                <span class="popup-tag">${tagText}</span>
+            </div>
+            <div style="font-size: 0.82rem; color: #ffffff; margin-bottom: 6px;"><b>${routeName}</b></div>
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 6px 0;">
+            <div><b>${t.busLabel}:</b> ${bus.id}</div>
+            <div><b>${t.vehicleType}:</b> ${vTypeLabel}</div>
+            <div><b>${t.speedLabel}:</b> ${speedKmH} km/h</div>
+            <div><b>${t.occupancyLabel}:</b> ${occupancy}</div>
+        </div>
+    `;
 }
 
-// Fetch bus data every 5 seconds
-updateBuses();
-setInterval(updateBuses, 5000);
-
-// --- FETCH STATIC ROUTE NAMES ---
-async function fetchRouteNames() {
+async function loadStaticRoutes() {
     try {
         const response = await fetch(`${BACKEND_URL}/routes`);
-        routeNames = await response.json();
-        console.log(`Loaded ${Object.keys(routeNames).length} static TTC route details.`);
-        if (currentBusData.length > 0) {
-            updateRouteDropdown(currentBusData);
-        }
-    } catch (error) {
-        console.error("Failed to load static route names:", error);
+        const routes = await response.json();
+        routeNames = routes;
+    } catch (e) {
+        console.warn("Failed to load static route metadata:", e);
     }
 }
-fetchRouteNames();
 
-// --- GEOLOCATION ---
+loadStaticRoutes();
+updateBuses();
+setInterval(updateBuses, 10000);
+
 let userMarker = null;
 
 function locateUser() {
@@ -553,24 +610,24 @@ function locateUser() {
         (position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
+            const latLng = [lat, lng];
 
-            map.setView([lat, lng], 15);
+            map.setView(latLng, 15);
 
             if (userMarker) {
-                userMarker.setLatLng([lat, lng]);
-                userMarker.openPopup();
+                userMarker.setLatLng(latLng);
             } else {
-                userMarker = L.circleMarker([lat, lng], {
-                    radius: 9,
-                    fillColor: "#DA291C",
-                    color: "#FFFFFF",
-                    weight: 3,
-                    opacity: 1,
-                    fillOpacity: 0.9
-                }).addTo(map);
+                const userIcon = L.divIcon({
+                    className: 'user-location-marker',
+                    html: `<div style="background-color: #007bff; width: 16px; height: 16px; border-radius: 50%; border: 3px solid #ffffff; box-shadow: 0 0 10px rgba(0,123,255,0.8); animation: pulse 2s infinite;"></div>`,
+                    iconSize: [22, 22],
+                    iconAnchor: [11, 11]
+                });
 
-                userMarker.bindPopup(translations[currentLang].locationPopup).openPopup();
+                userMarker = L.marker(latLng, { icon: userIcon }).addTo(map);
+                userMarker.bindPopup(translations[currentLang].locationPopup);
             }
+            userMarker.openPopup();
         },
         () => {
             alert(translations[currentLang].locationAlert);
@@ -578,101 +635,112 @@ function locateUser() {
     );
 }
 
-// --- SEARCH & ROUTE DROPDOWN FILTER ---
+function applyRouteFilterChange() {
+    const list = document.getElementById('route-list');
+    if (list) list.classList.add('route-list-hidden');
+    updateBuses();
+}
+
+function clearSelection() {
+    selectedRoutes.clear();
+    const searchInput = document.getElementById('route-search');
+    if (searchInput) searchInput.value = '';
+    const clearBtn = document.getElementById('clear-search');
+    if (clearBtn) clearBtn.style.display = 'none';
+
+    document.querySelectorAll('.route-checkbox').forEach(cb => cb.checked = false);
+    applyRouteFilterChange();
+}
+
 const searchInput = document.getElementById('route-search');
 const routeList = document.getElementById('route-list');
 const clearBtn = document.getElementById('clear-search');
 
-searchInput.addEventListener('focus', () => {
-    routeList.classList.remove('route-list-hidden');
-});
+if (searchInput) {
+    searchInput.addEventListener('focus', () => {
+        if (routeList) routeList.classList.remove('route-list-hidden');
+    });
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        if (clearBtn) clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+        if (routeList) routeList.classList.remove('route-list-hidden');
+
+        document.querySelectorAll('.route-item').forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(query) ? 'flex' : 'none';
+        });
+    });
+}
 
 document.addEventListener('click', (e) => {
-    const container = document.getElementById('search-container');
-    if (!container.contains(e.target)) {
-        routeList.classList.add('route-list-hidden');
+    const searchContainer = document.getElementById('search-container');
+    if (searchContainer && !searchContainer.contains(e.target)) {
+        if (routeList) routeList.classList.add('route-list-hidden');
     }
 });
-
-searchInput.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    clearBtn.style.display = term ? 'block' : 'none';
-    const items = document.querySelectorAll('.route-item');
-
-    items.forEach(item => {
-        if (item.innerText.toLowerCase().includes(term)) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-});
-
-function clearSelection() {
-    selectedRoutes.clear();
-    searchInput.value = '';
-    clearBtn.style.display = 'none';
-    const items = document.querySelectorAll('.route-item');
-    items.forEach(item => item.style.display = 'flex');
-    const checkboxes = document.querySelectorAll('.route-checkbox');
-    checkboxes.forEach(cb => cb.checked = false);
-    applyRouteFilterChange();
-}
-
-function applyRouteFilterChange() {
-    markerClusterGroup.clearLayers();
-    busMarkers = {};
-    updateBuses();
-}
 
 function updateRouteDropdown(buses) {
-    const activeRouteIds = new Set(buses.map(b => b.routeId));
+    if (!routeList) return;
 
-    // Determine if rebuild is needed
-    let isDifferent = false;
-    if (activeRouteIds.size !== availableRoutes.size) {
-        isDifferent = true;
-    } else {
-        for (let r of activeRouteIds) {
-            if (!availableRoutes.has(r)) { isDifferent = true; break; }
-        }
-    }
+    const favorites = getFavorites();
+    const currentRoutesInFeed = new Set();
 
-    if (!isDifferent) return;
-    availableRoutes = activeRouteIds;
-
-    const favs = getFavorites();
-    const sortedRoutes = Array.from(activeRouteIds).sort((a, b) => {
-        const aFav = favs.has(a);
-        const bFav = favs.has(b);
-        if (aFav && !bFav) return -1;
-        if (!aFav && bFav) return 1;
-        return a.localeCompare(b, undefined, { numeric: true });
+    buses.forEach(b => {
+        if (selectedAgency !== 'all' && b.agency !== selectedAgency) return;
+        const vType = getVehicleType(b);
+        if (selectedMode !== 'all' && vType !== selectedMode) return;
+        if (b.routeId) currentRoutesInFeed.add(b.routeId);
     });
 
-    routeList.innerHTML = '';
+    const sortedRoutes = Array.from(currentRoutesInFeed).sort((a, b) => {
+        const isFavA = favorites.has(a);
+        const isFavB = favorites.has(b);
+        if (isFavA && !isFavB) return -1;
+        if (!isFavA && isFavB) return 1;
+
+        const numA = parseInt(String(a).replace(/\D/g, '')) || 0;
+        const numB = parseInt(String(b).replace(/\D/g, '')) || 0;
+        if (numA === numB) return String(a).localeCompare(String(b));
+        return numA - numB;
+    });
+
+    if (areSetsEqual(new Set(sortedRoutes), availableRoutes)) return;
+
+    availableRoutes = new Set(sortedRoutes);
+    routeList.innerHTML = "";
+
+    const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
     sortedRoutes.forEach(routeId => {
         const item = document.createElement('div');
         item.className = 'route-item';
 
-        const routeMeta = routeNames[routeId] || {};
-        const routeLongName = routeMeta.longName || '';
-        const badgeColor = routeMeta.color || '#DA291C';
-        const badgeTextColor = routeMeta.textColor || '#FFFFFF';
-        const isFav = favs.has(routeId);
+        const isChecked = selectedRoutes.has(routeId);
+        const isFav = favorites.has(routeId);
+        const routeMeta = routeNames[routeId];
+        const routeDesc = routeMeta ? (routeMeta.longName || routeMeta.shortName) : '';
+        const badgeColor = routeMeta ? routeMeta.color : '#DA291C';
+        const badgeTextColor = routeMeta ? routeMeta.textColor : '#FFFFFF';
 
         item.innerHTML = `
             <div class="route-left">
-                <input type="checkbox" class="route-checkbox" id="cb-${routeId}" ${selectedRoutes.has(routeId) ? 'checked' : ''}>
+                <span class="fav-star ${isFav ? 'active' : ''}">${isFav ? '★' : '☆'}</span>
                 <span class="route-badge" style="background-color: ${badgeColor}; color: ${badgeTextColor};">${routeId}</span>
-                <span class="route-name">${routeLongName}</span>
+                <span class="route-name">${routeDesc}</span>
             </div>
-            <span class="fav-star ${isFav ? 'active' : ''}">★</span>
+            <input type="checkbox" class="route-checkbox" ${isChecked ? 'checked' : ''}>
         `;
 
-        const checkbox = item.querySelector('.route-checkbox');
+        if (searchTerm) {
+            const itemText = (routeId + " " + routeDesc).toLowerCase();
+            if (!itemText.includes(searchTerm)) {
+                item.style.display = 'none';
+            }
+        }
+
         const star = item.querySelector('.fav-star');
+        const checkbox = item.querySelector('.route-checkbox');
 
         item.addEventListener('click', (e) => {
             if (e.target === star) {
@@ -702,14 +770,16 @@ function updateRouteDropdown(buses) {
     });
 }
 
+function areSetsEqual(a, b) {
+    if (a.size !== b.size) return false;
+    for (const item of a) if (!b.has(item)) return false;
+    return true;
+}
+
 // --- HALIFAX AUTHOR EASTER EGG ---
 const halifaxIcon = L.divIcon({
     className: 'halifax-easter-egg-wrapper',
-    html: `
-        <div style="font-size: 26px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); cursor: pointer; transition: transform 0.2s ease;">
-            ⛴️
-        </div>
-    `,
+    html: `<div style="font-size: 26px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); cursor: pointer; transition: transform 0.2s ease;">⛴️</div>`,
     iconSize: [36, 36],
     iconAnchor: [18, 18]
 });
@@ -735,7 +805,6 @@ function checkHalifaxEasterEgg() {
     const bounds = map.getBounds();
     const isHalifaxInView = bounds.contains([44.648, -63.591]);
     
-    // Only show when user pans over Halifax and zooms in (zoom >= 11)
     if (zoom >= 11 && isHalifaxInView) {
         if (!map.hasLayer(halifaxMarker)) {
             map.addLayer(halifaxMarker);

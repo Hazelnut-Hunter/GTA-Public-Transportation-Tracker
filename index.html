@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TTC Live Vehicle Tracker - GTA</title>
+    <title>GTA Public Transportation Tracker - Live TTC, GO Transit & UP Express</title>
     <meta name="theme-color" content="#DA291C">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="TTC Tracker">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚌</text></svg>">
+    <meta name="apple-mobile-web-app-title" content="GTA Transit">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚆</text></svg>">
     
     <!-- Leaflet & MarkerCluster CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -22,16 +22,16 @@
     <!-- Loading Overlay -->
     <div id="loading-overlay">
         <div class="spinner"></div>
-        <h3 id="txt-loading-msg">Connecting to TTC Server...<br>Please wait while live vehicle locations load.</h3>
+        <h3 id="txt-loading-msg">Connecting to GTA Transit Servers...<br>Please wait while live vehicle locations load.</h3>
     </div>
     
-    <!-- Unified Top Control Panel (Flex Column: Navbar + Search & Mode Filters) -->
+    <!-- Unified Top Control Panel (Flex Column: Navbar + Dual Filters + Search) -->
     <div id="top-panel">
         <!-- Navigation Bar -->
         <div id="navbar">
             <div class="nav-brand">
-                <span class="ttc-badge">TTC</span>
-                <span class="nav-title" id="txt-nav-title">TTC Live Vehicle Tracker</span>
+                <span class="ttc-badge">GTA</span>
+                <span class="nav-title" id="txt-nav-title">GTA Live Transit Tracker</span>
                 <span id="live-count-badge" class="live-count-badge">0 Live</span>
             </div>
             <div class="nav-buttons">
@@ -41,20 +41,23 @@
             </div>
         </div>
 
-        <!-- Search & Filter Container -->
+        <!-- Search & Dual Filter Container -->
         <div id="search-container">
+            <!-- Primary Agency Filter Row -->
+            <div id="agency-filters">
+                <button class="agency-btn active" onclick="setAgencyFilter('all')" id="btn-agency-all">🌐 All Agencies</button>
+                <button class="agency-btn ttc-btn" onclick="setAgencyFilter('ttc')" id="btn-agency-ttc">🔴 TTC</button>
+                <button class="agency-btn go-btn" onclick="setAgencyFilter('go')" id="btn-agency-go">🟢 GO Transit</button>
+                <button class="agency-btn up-btn" onclick="setAgencyFilter('up')" id="btn-agency-up">🚆 UP Express</button>
+            </div>
+
+            <!-- Secondary Mode Filter Pills (Dynamically populated based on selected Agency) -->
+            <div id="mode-filters"></div>
+
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="route-search" placeholder="Search Route (e.g. 1, 501, 96)..." autocomplete="off">
+                <input type="text" id="route-search" placeholder="Search Route (e.g. 1, 501, LW, UP)..." autocomplete="off">
                 <button id="clear-search" onclick="clearSelection()" style="display:none;">✕</button>
-            </div>
-            
-            <!-- Transit Mode Filter Pills -->
-            <div id="mode-filters">
-                <button class="mode-btn active" onclick="setModeFilter('all')" id="btn-mode-all">🌐 All</button>
-                <button class="mode-btn" onclick="setModeFilter('bus')" id="btn-mode-bus">🚌 Bus</button>
-                <button class="mode-btn" onclick="setModeFilter('streetcar')" id="btn-mode-streetcar">🚋 Streetcar</button>
-                <button class="mode-btn" onclick="setModeFilter('subway')" id="btn-mode-subway">🚇 Subway</button>
             </div>
 
             <div id="route-list" class="route-list-hidden"></div>
@@ -68,7 +71,7 @@
 
     <!-- Info Header Widget -->
     <div id="info">
-        <h2 id="txt-welcome">Toronto Transit Commission Tracker</h2>
+        <h2 id="txt-welcome">Greater Toronto Area Transit Tracker</h2>
         <p>
             <span id="txt-time">Current Time:</span>
             <time id="current-time">Loading...</time>
