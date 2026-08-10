@@ -14,7 +14,7 @@ const translations = {
         locationPopup: "You are here",
         locationNotSupportedAlert: "Geolocation is not supported by your browser.",
         locationAlert: "Unable to retrieve your position. Please check your location permissions.",
-        searchPlaceholder: "Search Route or Garage (e.g. Line 5, 501, Leslie Barns)...",
+        searchPlaceholder: "Search Route or Garage (e.g. 900, 300, 200, Leslie Barns)...",
         dirLabel: "Direction",
         inbound: "Inbound",
         outbound: "Outbound",
@@ -31,7 +31,7 @@ const translations = {
         train: "Train",
         modeAll: "🌐 All Modes",
         modeBus: "🚌 Bus",
-        modeStreetcar: "`🚋 Streetcar",
+        modeStreetcar: "🚋 Streetcar",
         modeSubway: "🚇 Subway",
         modeTrain: "🚆 Train",
         liveCountTag: "Live",
@@ -60,7 +60,7 @@ const translations = {
         locationPopup: "Vous êtes ici",
         locationNotSupportedAlert: "La géolocalisation n'est pas supportée par votre navigateur.",
         locationAlert: "Impossible de récupérer votre position. Vérifiez les autorisations.",
-        searchPlaceholder: "Chercher un itinéraire ou dépôt (ex. Line 5, 501, Leslie Barns)...",
+        searchPlaceholder: "Chercher un itinéraire ou dépôt (ex. 900, 300, 200, Leslie Barns)...",
         dirLabel: "Direction",
         inbound: "Aller",
         outbound: "Retour",
@@ -106,7 +106,7 @@ const translations = {
         locationPopup: "您在这里",
         locationNotSupportedAlert: "您的浏览器不支持地理位置功能。",
         locationAlert: "无法获取您的位置，请检查浏览器定位权限。",
-        searchPlaceholder: "搜索线路或车库 (如 Line 5, 501, Leslie Barns)...",
+        searchPlaceholder: "搜索线路或车库 (如 900, 300, 200, Leslie Barns)...",
         dirLabel: "方向",
         inbound: "上行",
         outbound: "下行",
@@ -479,6 +479,47 @@ function getVehicleType(bus) {
     return 'bus';
 }
 
+// Uniform Category Color Resolver for Vehicles and Search Badges
+function getRouteColors(routeId, agency, vType) {
+    if (agency === 'go') return { color: '#00853D', textColor: '#FFFFFF' };
+    if (agency === 'up') return { color: '#004B49', textColor: '#D4AF37' };
+
+    const rId = String(routeId);
+    const num = parseInt(rId.replace(/\D/g, '')) || 0;
+
+    // 1. 900-series Express Routes: Express Green (#00853D)
+    if (num >= 900 && num <= 999) {
+        return { color: '#00853D', textColor: '#FFFFFF' };
+    }
+
+    // 2. 300-series Blue Night Network: Deep Blue (#0055A5)
+    if (num >= 300 && num <= 399) {
+        return { color: '#0055A5', textColor: '#FFFFFF' };
+    }
+
+    // 3. 200-series Pink Lines: Vibrant Pink (#E91E63)
+    if (num >= 200 && num <= 299) {
+        return { color: '#E91E63', textColor: '#FFFFFF' };
+    }
+
+    // 4. Subway Lines
+    if (rId === '1') return { color: '#FFC72C', textColor: '#000000' };
+    if (rId === '2') return { color: '#00994C', textColor: '#FFFFFF' };
+    if (rId === '3') return { color: '#00A3E0', textColor: '#FFFFFF' };
+    if (rId === '4') return { color: '#B30086', textColor: '#FFFFFF' };
+    if (rId === '5') return { color: '#E65100', textColor: '#FFFFFF' };
+    if (rId === '6') return { color: '#5D4037', textColor: '#FFFFFF' };
+
+    // 5. Static GTFS metadata if customized
+    const meta = routeNames[routeId];
+    if (meta && meta.color && meta.color !== '#DA291C') {
+        return { color: meta.color, textColor: meta.textColor || '#FFFFFF' };
+    }
+
+    // 6. Default TTC Red
+    return { color: '#DA291C', textColor: '#FFFFFF' };
+}
+
 function showErrorDetail() {
     const title = translations[currentLang].errorTitle;
     const msg = translations[currentLang].errorMessage;
@@ -710,24 +751,9 @@ async function updateBuses() {
     }
 }
 
-// Exact Original Vehicle Icon HTML (Restored from commit aade297 before GO & UP)
+// Exact Original Vehicle Icon HTML with Dynamic Category Colors (Express 900s, Pink 200s, Blue Night 300s)
 function createVehicleIconHtml(bus, vType) {
-    let badgeColor = '#DA291C';
-    let badgeTextColor = '#FFFFFF';
-
-    if (bus.agency === 'go') {
-        badgeColor = '#00853D';
-    } else if (bus.agency === 'up') {
-        badgeColor = '#004B49';
-        badgeTextColor = '#D4AF37';
-    } else {
-        if (vType === 'subway') {
-            const meta = routeNames[bus.routeId];
-            badgeColor = meta ? meta.color : '#FFC72C';
-            badgeTextColor = meta ? meta.textColor : '#000000';
-        }
-    }
-
+    const { color: badgeColor, textColor: badgeTextColor } = getRouteColors(bus.routeId, bus.agency, vType);
     const routeLabel = String(bus.routeId).length <= 4 ? bus.routeId : String(bus.routeId).slice(0, 4);
     const bearing = bus.bearing || 0;
 
@@ -971,19 +997,11 @@ function updateRouteDropdown(buses) {
         const routeMeta = routeNames[routeId];
         
         let routeDesc = routeMeta ? (routeMeta.longName || routeMeta.shortName) : '';
-        let badgeColor = routeMeta ? routeMeta.color : '#DA291C';
-        let badgeTextColor = routeMeta ? routeMeta.textColor : '#FFFFFF';
+        const { color: badgeColor, textColor: badgeTextColor } = getRouteColors(routeId, 'ttc', 'bus');
 
         // Custom default metadata for Subway Lines 5 and 6 if static GTFS hasn't loaded them yet
-        if (routeId === '5') {
-            if (!routeDesc) routeDesc = 'Line 5 Eglinton LRT';
-            badgeColor = '#E65100';
-            badgeTextColor = '#FFFFFF';
-        } else if (routeId === '6') {
-            if (!routeDesc) routeDesc = 'Line 6 Finch West LRT';
-            badgeColor = '#5D4037';
-            badgeTextColor = '#FFFFFF';
-        }
+        if (routeId === '5' && !routeDesc) routeDesc = 'Line 5 Eglinton LRT';
+        else if (routeId === '6' && !routeDesc) routeDesc = 'Line 6 Finch West LRT';
 
         item.innerHTML = `
             <div class="route-left">
