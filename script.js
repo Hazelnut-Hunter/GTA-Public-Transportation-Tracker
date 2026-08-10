@@ -40,7 +40,8 @@ const translations = {
         locateTooltip: "Find My Location",
         easterEggTitle: "🌊 Easter Egg Discovered!",
         easterEggDesc: "The author of this transit tracker is based in <b>Halifax, Nova Scotia! 🇨🇦</b>",
-        easterEggBtn: "🚌 Visit Halifax Bus Tracker →"
+        easterEggBtn: "🚌 Visit Halifax Bus Tracker →",
+        agencyUnavailableMsg: "{AGENCY} Live GPS tracking is currently unavailable. Real-time API key integration coming soon!"
     },
     fr: {
         navTitle: "Suivi du Transit GTA",
@@ -82,7 +83,8 @@ const translations = {
         locateTooltip: "Ma position",
         easterEggTitle: "🌊 Secret Découvert !",
         easterEggDesc: "L'auteur de cette application est basé à <b>Halifax, Nouvelle-Écosse ! 🇨🇦</b>",
-        easterEggBtn: "🚌 Découvrir Halifax Bus Tracker →"
+        easterEggBtn: "🚌 Découvrir Halifax Bus Tracker →",
+        agencyUnavailableMsg: "Le suivi GPS en direct de {AGENCY} est actuellement indisponible. Intégration de l'API à venir !"
     },
     zh: {
         navTitle: "大多伦多(GTA)公共交通实时追踪器",
@@ -124,7 +126,8 @@ const translations = {
         locateTooltip: "定位我的位置",
         easterEggTitle: "🌊 发现隐藏彩蛋！",
         easterEggDesc: "本公交追踪器的开发者位于 <b>加拿大新斯科舍省哈里法克斯 (Halifax)！🇨🇦</b>",
-        easterEggBtn: "🚌 访问 Halifax 公交追踪器 →"
+        easterEggBtn: "🚌 访问 Halifax 公交追踪器 →",
+        agencyUnavailableMsg: "{AGENCY} 实时GPS定位暂未开放，官方 API 接入中，敬请期待！"
     }
 };
 
@@ -283,6 +286,12 @@ const AGENCY_MODES = {
 };
 
 function setAgencyFilter(agency) {
+    if (agency === 'go' || agency === 'up') {
+        const agencyName = agency === 'go' ? 'GO Transit' : 'UP Express';
+        const msg = translations[currentLang].agencyUnavailableMsg.replace('{AGENCY}', agencyName);
+        alert(msg);
+    }
+
     selectedAgency = agency;
     
     document.querySelectorAll('.agency-btn').forEach(btn => {
