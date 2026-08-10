@@ -167,7 +167,7 @@ body, html {
 
 /* Search Container */
 #search-container {
-    width: 360px;
+    width: auto;
     max-width: calc(100vw - 30px);
     display: flex;
     flex-direction: column;
@@ -180,22 +180,28 @@ body, html {
     align-items: center;
     gap: 6px;
     width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+}
+#filter-controls-row::-webkit-scrollbar {
+    display: none;
 }
 
-/* Primary Agency Filters (Single Line Row) */
+/* Primary Agency Filters (Full Agency Names without Truncation/Ellipsis) */
 #agency-filters {
     display: flex;
     flex-wrap: nowrap;
     gap: 4px;
-    width: 100%;
-    overflow: hidden;
+    flex-shrink: 0;
 }
 
 .agency-btn {
-    padding: 5px 6px;
+    padding: 6px 10px;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 0.73rem;
+    font-size: 0.77rem;
     border: 1px solid var(--dark-border);
     background: var(--dark-surface-translucent);
     backdrop-filter: blur(12px);
@@ -203,11 +209,10 @@ body, html {
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s ease;
-    flex: 1 1 0px;
-    min-width: 0;
+    flex-shrink: 0;
     text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
+    text-overflow: clip;
 }
 
 .agency-btn:hover {

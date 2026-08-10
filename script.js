@@ -555,6 +555,8 @@ function createVehicleIconHtml(bus, vType) {
             </div>
             <div class="marker-pill" style="background-color: ${badgeColor}; color: ${textColor};">
                 <span class="marker-emoji">${emoji}</span>
+                <span class="marker-route">${routeLabel}</span>
+            </div>
         </div>
     `;
 }
