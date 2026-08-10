@@ -268,12 +268,10 @@ body, html {
     color: #ffffff;
 }
 
-/* Custom Vehicle Markers with Dead-Center GPS Anchor Alignment */
+/* Custom Vehicle Markers with Pointer Arrow Pin (Matching User Screenshot) */
 .bus-marker-container {
     background: transparent !important;
     border: none !important;
-    width: 0 !important;
-    height: 0 !important;
 }
 
 .custom-vehicle-marker {
@@ -284,15 +282,15 @@ body, html {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -100%);
     cursor: pointer;
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
     white-space: nowrap;
     pointer-events: auto;
 }
 
 .custom-vehicle-marker:hover {
-    transform: translate(-50%, -50%) scale(1.15);
+    transform: translate(-50%, -100%) scale(1.18);
     z-index: 99999 !important;
 }
 
@@ -300,9 +298,9 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    margin-bottom: -6px;
+    width: 22px;
+    height: 22px;
+    margin-bottom: -5px;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2;
 }
@@ -312,16 +310,28 @@ body, html {
 }
 
 .marker-pill {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     padding: 3px 8px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-weight: 800;
-    font-size: 0.74rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    font-size: 0.80rem;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+    border: 1.5px solid #FFFFFF;
     white-space: nowrap;
+    z-index: 1;
+    line-height: 1.15;
+}
+
+.marker-pin-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid #DA291C;
+    margin-top: -1px;
     z-index: 1;
 }
 
@@ -332,6 +342,30 @@ body, html {
 
 .marker-route {
     letter-spacing: 0.2px;
+}
+
+/* Garage Cluster Marker Badge */
+.garage-cluster-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: #1e293b;
+    color: #FFC72C;
+    border: 2px solid #FFC72C;
+    font-weight: 800;
+    font-size: 0.82rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.garage-pin-arrow {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 8px solid #FFC72C;
+    margin-top: -1px;
 }
 
 .search-box {
