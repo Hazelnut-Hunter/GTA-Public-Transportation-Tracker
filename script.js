@@ -31,7 +31,7 @@ const translations = {
         train: "Train",
         modeAll: "🌐 All Modes",
         modeBus: "🚌 Bus",
-        modeStreetcar: "`🚋 Streetcar",
+        modeStreetcar: "🚋 Streetcar",
         modeSubway: "🚇 Subway",
         modeTrain: "🚆 Train",
         liveCountTag: "Live",
@@ -166,7 +166,7 @@ function setLanguage(lang) {
     if (btnAgGo) btnAgGo.textContent = t.agencyGo;
     if (btnAgUp) btnAgUp.textContent = t.agencyUp;
 
-    // Re-render secondary mode filter pills
+    // Re-render secondary mode filter dropdown
     renderModeFilters();
 
     // Update Tooltips
@@ -289,25 +289,39 @@ function setAgencyFilter(agency) {
         btn.classList.toggle('active', btn.id === `btn-agency-${agency}`);
     });
 
+    // Auto-unselect routes in selectedRoutes that do NOT belong to the new agency
+    if (selectedAgency !== 'all' && selectedRoutes.size > 0 && currentBusData.length > 0) {
+        const agencyRoutes = new Set(
+            currentBusData
+                .filter(b => b.agency === selectedAgency)
+                .map(b => b.routeId)
+        );
+
+        selectedRoutes.forEach(rId => {
+            if (!agencyRoutes.has(rId)) {
+                selectedRoutes.delete(rId);
+            }
+        });
+    }
+
     const allowed = AGENCY_MODES[agency] || AGENCY_MODES['all'];
     if (!allowed.includes(selectedMode)) {
         selectedMode = 'all';
     }
 
     renderModeFilters();
+    availableRoutes.clear();
+    updateRouteDropdown(currentBusData);
     applyRouteFilterChange();
 }
 
 function setModeFilter(mode) {
     selectedMode = mode;
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
-    });
     applyRouteFilterChange();
 }
 
 function renderModeFilters() {
-    const container = document.getElementById('mode-filters');
+    const container = document.getElementById('mode-select-wrapper');
     if (!container) return;
 
     const allowed = AGENCY_MODES[selectedAgency] || AGENCY_MODES['all'];
@@ -321,13 +335,15 @@ function renderModeFilters() {
         train: t.modeTrain || '🚆 Train'
     };
 
-    container.innerHTML = allowed.map(m => `
-        <button class="mode-btn ${selectedMode === m ? 'active' : ''}" 
-                onclick="setModeFilter('${m}')" 
-                data-mode="${m}">
-            ${MODE_MAP[m]}
-        </button>
-    `).join('');
+    container.innerHTML = `
+        <select id="mode-select" class="mode-dropdown" onchange="setModeFilter(this.value)">
+            ${allowed.map(m => `
+                <option value="${m}" ${selectedMode === m ? 'selected' : ''}>
+                    ${MODE_MAP[m]}
+                </option>
+            `).join('')}
+        </select>
+    `;
 }
 
 // Initial mode filter render
@@ -446,9 +462,9 @@ async function updateBuses() {
 
                     const iconDiv = marker.getElement();
                     if (iconDiv) {
-                        const vehicleIcon = iconDiv.querySelector('.custom-vehicle-marker');
-                        if (vehicleIcon) {
-                            vehicleIcon.style.transform = `rotate(${bus.bearing || 0}deg)`;
+                        const pointer = iconDiv.querySelector('.marker-pointer');
+                        if (pointer) {
+                            pointer.style.transform = `rotate(${bus.bearing || 0}deg)`;
                         }
                     }
 
@@ -530,7 +546,8 @@ function createVehicleIconHtml(bus, vType) {
     const routeLabel = String(bus.routeId).length <= 4 ? bus.routeId : String(bus.routeId).slice(0, 4);
 
     return `
-        <div class="custom-vehicle-marker agency-${bus.agency}" style="transform: rotate(${bus.bearing || 0}deg);">
+        <div class="custom-vehicle-marker agency-${bus.agency}">
+            <div class="marker-pointer" style="transform: rotate(${bus.bearing || 0}deg);">▲</div>
             <div class="marker-pill" style="background-color: ${badgeColor}; color: ${textColor};">
                 <span class="marker-emoji">${emoji}</span>
                 <span class="marker-route">${routeLabel}</span>

@@ -43,16 +43,20 @@
 
         <!-- Search & Dual Filter Container -->
         <div id="search-container">
-            <!-- Primary Agency Filter Row -->
-            <div id="agency-filters">
-                <button class="agency-btn active" onclick="setAgencyFilter('all')" id="btn-agency-all">🌐 All Agencies</button>
-                <button class="agency-btn ttc-btn" onclick="setAgencyFilter('ttc')" id="btn-agency-ttc">🔴 TTC</button>
-                <button class="agency-btn go-btn" onclick="setAgencyFilter('go')" id="btn-agency-go">🟢 GO Transit</button>
-                <button class="agency-btn up-btn" onclick="setAgencyFilter('up')" id="btn-agency-up">🚆 UP Express</button>
-            </div>
+            <div id="filter-controls-row">
+                <!-- Primary Agency Filter Row -->
+                <div id="agency-filters">
+                    <button class="agency-btn active" onclick="setAgencyFilter('all')" id="btn-agency-all">🌐 All Agencies</button>
+                    <button class="agency-btn ttc-btn" onclick="setAgencyFilter('ttc')" id="btn-agency-ttc">🔴 TTC</button>
+                    <button class="agency-btn go-btn" onclick="setAgencyFilter('go')" id="btn-agency-go">🟢 GO Transit</button>
+                    <button class="agency-btn up-btn" onclick="setAgencyFilter('up')" id="btn-agency-up">🚆 UP Express</button>
+                </div>
 
-            <!-- Secondary Mode Filter Pills (Dynamically populated based on selected Agency) -->
-            <div id="mode-filters"></div>
+                <!-- Secondary Mode Dropdown Select -->
+                <div id="mode-select-wrapper">
+                    <select id="mode-select" class="mode-dropdown" onchange="setModeFilter(this.value)"></select>
+                </div>
+            </div>
 
             <div class="search-box">
                 <span class="search-icon">🔍</span>
