@@ -182,28 +182,19 @@ body, html {
     width: 100%;
 }
 
-/* Primary Agency Filters */
+/* Primary Agency Filters (Show all at once, flex-wrap) */
 #agency-filters {
     display: flex;
+    flex-wrap: wrap;
     gap: 4px;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 2px;
-    padding-right: 8px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    flex: 1;
-    min-width: 0;
-}
-#agency-filters::-webkit-scrollbar {
-    display: none;
+    width: 100%;
 }
 
 .agency-btn {
-    padding: 5px 10px;
+    padding: 5px 9px;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 0.76rem;
+    font-size: 0.75rem;
     border: 1px solid var(--dark-border);
     background: var(--dark-surface-translucent);
     backdrop-filter: blur(12px);
@@ -211,7 +202,8 @@ body, html {
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s ease;
-    flex-shrink: 0;
+    flex: 1 1 auto;
+    text-align: center;
 }
 
 .agency-btn:hover {
@@ -273,7 +265,7 @@ body, html {
     color: #ffffff;
 }
 
-/* Custom Vehicle Markers with Directional Arrow Indicators */
+/* Custom Vehicle Markers with Bold SVG Directional Arrows */
 .bus-marker-container {
     background: transparent !important;
     border: none !important;
@@ -286,35 +278,41 @@ body, html {
     justify-content: center;
     position: relative;
     cursor: pointer;
-    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
-    transition: transform 0.2s ease;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
 }
 
 .custom-vehicle-marker:hover {
-    transform: scale(1.15) !important;
+    transform: scale(1.15);
     z-index: 99999 !important;
 }
 
-.marker-pointer {
-    font-size: 0.65rem;
-    color: var(--accent-gold);
-    line-height: 1;
-    margin-bottom: -3px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-    transition: transform 0.3s ease;
+.marker-heading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-bottom: -6px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+}
+
+.heading-arrow-svg {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
 }
 
 .marker-pill {
     display: flex;
     align-items: center;
     gap: 3px;
-    padding: 3px 7px;
+    padding: 3px 8px;
     border-radius: 12px;
     font-weight: 800;
-    font-size: 0.72rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    font-size: 0.74rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
     white-space: nowrap;
+    z-index: 1;
 }
 
 .marker-emoji {

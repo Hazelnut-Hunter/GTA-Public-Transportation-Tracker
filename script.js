@@ -462,9 +462,9 @@ async function updateBuses() {
 
                     const iconDiv = marker.getElement();
                     if (iconDiv) {
-                        const pointer = iconDiv.querySelector('.marker-pointer');
-                        if (pointer) {
-                            pointer.style.transform = `rotate(${bus.bearing || 0}deg)`;
+                        const headingContainer = iconDiv.querySelector('.marker-heading-container');
+                        if (headingContainer) {
+                            headingContainer.style.transform = `rotate(${bus.bearing || 0}deg)`;
                         }
                     }
 
@@ -476,9 +476,9 @@ async function updateBuses() {
                     const customIcon = L.divIcon({
                         className: 'bus-marker-container',
                         html: createVehicleIconHtml(bus, vType),
-                        iconSize: [40, 40],
-                        iconAnchor: [20, 20],
-                        popupAnchor: [0, -20]
+                        iconSize: [44, 44],
+                        iconAnchor: [22, 22],
+                        popupAnchor: [0, -22]
                     });
 
                     const marker = L.marker(newLatLng, { icon: customIcon });
@@ -544,14 +544,17 @@ function createVehicleIconHtml(bus, vType) {
     }
 
     const routeLabel = String(bus.routeId).length <= 4 ? bus.routeId : String(bus.routeId).slice(0, 4);
+    const bearing = bus.bearing || 0;
 
     return `
         <div class="custom-vehicle-marker agency-${bus.agency}">
-            <div class="marker-pointer" style="transform: rotate(${bus.bearing || 0}deg);">▲</div>
+            <div class="marker-heading-container" style="transform: rotate(${bearing}deg);">
+                <svg class="heading-arrow-svg" viewBox="0 0 24 24" width="22" height="22">
+                    <polygon points="12,1 21,21 12,16 3,21" fill="#FFD700" stroke="#000000" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+            </div>
             <div class="marker-pill" style="background-color: ${badgeColor}; color: ${textColor};">
                 <span class="marker-emoji">${emoji}</span>
-                <span class="marker-route">${routeLabel}</span>
-            </div>
         </div>
     `;
 }
