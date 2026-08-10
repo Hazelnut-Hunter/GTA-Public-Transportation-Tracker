@@ -14,7 +14,7 @@ const translations = {
         locationPopup: "You are here",
         locationNotSupportedAlert: "Geolocation is not supported by your browser.",
         locationAlert: "Unable to retrieve your position. Please check your location permissions.",
-        searchPlaceholder: "Search Route (e.g. 1, 501)...",
+        searchPlaceholder: "Search Route or Garage (e.g. Line 5, 501, Leslie Barns)...",
         dirLabel: "Direction",
         inbound: "Inbound",
         outbound: "Outbound",
@@ -31,7 +31,7 @@ const translations = {
         train: "Train",
         modeAll: "🌐 All Modes",
         modeBus: "🚌 Bus",
-        modeStreetcar: "🚋 Streetcar",
+        modeStreetcar: "`🚋 Streetcar",
         modeSubway: "🚇 Subway",
         modeTrain: "🚆 Train",
         liveCountTag: "Live",
@@ -60,7 +60,7 @@ const translations = {
         locationPopup: "Vous êtes ici",
         locationNotSupportedAlert: "La géolocalisation n'est pas supportée par votre navigateur.",
         locationAlert: "Impossible de récupérer votre position. Vérifiez les autorisations.",
-        searchPlaceholder: "Chercher un itinéraire (ex. 1, 501)...",
+        searchPlaceholder: "Chercher un itinéraire ou dépôt (ex. Line 5, 501, Leslie Barns)...",
         dirLabel: "Direction",
         inbound: "Aller",
         outbound: "Retour",
@@ -106,7 +106,7 @@ const translations = {
         locationPopup: "您在这里",
         locationNotSupportedAlert: "您的浏览器不支持地理位置功能。",
         locationAlert: "无法获取您的位置，请检查浏览器定位权限。",
-        searchPlaceholder: "搜索线路 (如 1, 501)...",
+        searchPlaceholder: "搜索线路或车库 (如 Line 5, 501, Leslie Barns)...",
         dirLabel: "方向",
         inbound: "上行",
         outbound: "下行",
@@ -280,23 +280,29 @@ markerClusterGroup.on('unspiderfied', () => {
     }
 });
 
-// --- MAJOR GTA TRANSIT GARAGES, CARHOUSES & RAIL YARDS DATABASE ---
+// Re-check garage visibility on zoom change
+map.on('zoomend', () => {
+    if (currentBusData.length > 0) {
+        updateBuses();
+    }
+});
+
+// --- VERIFIED ACTIVE GTA TRANSIT GARAGES & CARHOUSES (Exact OSM Coordinates) ---
 const GTA_GARAGES = [
-    { id: "hillcrest", name: "Hillcrest Complex / Harvey Shop", agency: "ttc", lat: 43.6738, lng: -79.4275, radius: 0.0035 },
-    { id: "leslie_barns", name: "Leslie Barns Carhouse", agency: "ttc", lat: 43.6622, lng: -79.3248, radius: 0.0035 },
+    { id: "leslie_barns", name: "Leslie Barns Streetcar Facility", agency: "ttc", lat: 43.6586, lng: -79.3269, radius: 0.0038 },
+    { id: "russell", name: "Russell Carhouse (Connaught)", agency: "ttc", lat: 43.6642, lng: -79.3228, radius: 0.0030 },
     { id: "roncesvalles", name: "Roncesvalles Carhouse", agency: "ttc", lat: 43.6398, lng: -79.4472, radius: 0.0030 },
-    { id: "russell", name: "Russell Carhouse (Connolly)", agency: "ttc", lat: 43.6668, lng: -79.3178, radius: 0.0030 },
-    { id: "arrow_road", name: "Arrow Road Garage", agency: "ttc", lat: 43.7431, lng: -79.5398, radius: 0.0040 },
-    { id: "birchmount", name: "Birchmount Garage", agency: "ttc", lat: 43.6938, lng: -79.2638, radius: 0.0035 },
-    { id: "eglinton", name: "Eglinton Garage", agency: "ttc", lat: 43.7128, lng: -79.3088, radius: 0.0035 },
-    { id: "malvern", name: "Malvern Garage", agency: "ttc", lat: 43.8055, lng: -79.2368, radius: 0.0040 },
-    { id: "mount_dennis", name: "Mount Dennis Garage", agency: "ttc", lat: 43.6872, lng: -79.4858, radius: 0.0035 },
-    { id: "queensway", name: "Queensway Garage", agency: "ttc", lat: 43.6218, lng: -79.5248, radius: 0.0035 },
-    { id: "wilson", name: "Wilson Garage & Carhouse", agency: "ttc", lat: 43.7388, lng: -79.4528, radius: 0.0040 },
-    { id: "greenwood", name: "Greenwood Subway Yard", agency: "ttc", lat: 43.6768, lng: -79.3308, radius: 0.0035 },
-    { id: "mcnicoll", name: "McNicoll Garage", agency: "ttc", lat: 43.8188, lng: -79.2948, radius: 0.0040 },
-    { id: "whitby_go", name: "Whitby GO Yard", agency: "go", lat: 43.8682, lng: -78.8874, radius: 0.0045 },
-    { id: "willowbrook", name: "Willowbrook GO Facility", agency: "go", lat: 43.6182, lng: -79.5124, radius: 0.0045 }
+    { id: "hillcrest", name: "Hillcrest Complex / Harvey Shop", agency: "ttc", lat: 43.6756, lng: -79.4178, radius: 0.0035 },
+    { id: "arrow_road", name: "Arrow Road Garage", agency: "ttc", lat: 43.7456, lng: -79.5322, radius: 0.0038 },
+    { id: "birchmount", name: "Birchmount Garage", agency: "ttc", lat: 43.7063, lng: -79.2692, radius: 0.0038 },
+    { id: "eglinton", name: "Eglinton Garage (Comstock)", agency: "ttc", lat: 43.721369, lng: -79.290099, radius: 0.0038 },
+    { id: "malvern", name: "Malvern Garage", agency: "ttc", lat: 43.7944, lng: -79.2425, radius: 0.0038 },
+    { id: "mount_dennis", name: "Mount Dennis Garage", agency: "ttc", lat: 43.6928, lng: -79.4948, radius: 0.0038 },
+    { id: "queensway", name: "Queensway Garage", agency: "ttc", lat: 43.6161, lng: -79.5283, radius: 0.0038 },
+    { id: "wilson", name: "Wilson Garage & Yard", agency: "ttc", lat: 43.7390, lng: -79.4546, radius: 0.0040 },
+    { id: "mcnicoll", name: "McNicoll Garage", agency: "ttc", lat: 43.8150, lng: -79.2990, radius: 0.0038 },
+    { id: "whitby_go", name: "Whitby GO Rail Yard", agency: "go", lat: 43.8645, lng: -78.8952, radius: 0.0045 },
+    { id: "willowbrook", name: "Willowbrook GO Facility", agency: "go", lat: 43.6162, lng: -79.5168, radius: 0.0045 }
 ];
 
 let expandedGarages = new Set(); // Stores garage IDs expanded by user click
@@ -322,7 +328,18 @@ function toggleGarageExpand(garageId) {
     updateBuses();
 }
 
+function focusGarageOnMap(garageId) {
+    const garage = GTA_GARAGES.find(g => g.id === garageId);
+    if (garage) {
+        map.setView([garage.lat, garage.lng], 16);
+        if (garageMarkers[garageId]) {
+            garageMarkers[garageId].openPopup();
+        }
+    }
+}
+
 window.toggleGarageExpand = toggleGarageExpand;
+window.focusGarageOnMap = focusGarageOnMap;
 
 let busMarkers = {};
 let selectedRoutes = new Set();
@@ -411,7 +428,7 @@ function renderModeFilters() {
     const MODE_MAP = {
         all: t.modeAll || '🌐 All Modes',
         bus: t.modeBus || '🚌 Bus',
-        streetcar: t.modeStreetcar || '🚋 Streetcar',
+        streetcar: t.modeStreetcar || '`🚋 Tramway',
         subway: t.modeSubway || '🚇 Subway',
         train: t.modeTrain || '🚆 Train'
     };
@@ -451,7 +468,7 @@ function toggleFavorite(routeId, event) {
 }
 
 const STREETCAR_ROUTES = new Set(['501', '503', '504', '505', '506', '507', '509', '510', '511', '512', '301', '304', '306', '310']);
-const SUBWAY_ROUTES = new Set(['1', '2', '4', '5', '6']);
+const SUBWAY_ROUTES = new Set(['1', '2', '3', '4', '5', '6']);
 
 function getVehicleType(bus) {
     if (bus.type) return bus.type;
@@ -470,7 +487,7 @@ function showErrorDetail() {
 
 let isFirstLoad = true;
 
-// Bus Data Updater with Garage Cluster Detection
+// Bus Data Updater with Zoom-Gated Garage Cluster Detection
 async function updateBuses() {
     try {
         const response = await fetch(`${BACKEND_URL}/buses`);
@@ -516,8 +533,10 @@ async function updateBuses() {
         const activeBusIds = new Set();
         const activeGarageIds = new Set();
         const markersToAdd = [];
+        const currentZoom = map.getZoom();
+        const MIN_GARAGE_ZOOM = 13;
 
-        // 1. Group Vehicles by Garage
+        // 1. Group Vehicles by Garage (STRICT: ONLY off-duty/stationary/Unknown vehicles)
         const garageVehiclesMap = {};
         const unclusteredBuses = [];
 
@@ -533,62 +552,81 @@ async function updateBuses() {
             if (selectedRoutes.size > 0 && !selectedRoutes.has(bus.routeId)) return;
 
             const garage = getGarageForVehicle(bus);
-            const isParkedOrUnknown = (bus.speed === 0 || String(bus.routeId).toLowerCase().includes('unknown') || !bus.routeId);
+            const isOffDutyOrUnknown = (bus.speed === 0 && (!bus.routeId || bus.routeId === '0' || String(bus.routeId).toLowerCase().includes('unknown')));
 
-            if (garage && isParkedOrUnknown && !expandedGarages.has(garage.id)) {
+            if (garage && isOffDutyOrUnknown) {
                 if (!garageVehiclesMap[garage.id]) {
                     garageVehiclesMap[garage.id] = { garage, vehicles: [] };
                 }
                 garageVehiclesMap[garage.id].vehicles.push(bus);
-            } else {
+            }
+
+            if (!garage || !isOffDutyOrUnknown || expandedGarages.has(garage.id)) {
                 unclusteredBuses.push(bus);
             }
         });
 
-        // 2. Render Garage Cluster Markers
+        // 2. Render Garage Cluster Markers (ONLY if Zoom >= 13 OR Garage is Expanded)
         Object.keys(garageVehiclesMap).forEach(garageId => {
             const { garage, vehicles } = garageVehiclesMap[garageId];
-            activeGarageIds.add(garageId);
+            if (vehicles.length === 0) return;
 
-            const garageLatLng = [garage.lat, garage.lng];
+            const isExpanded = expandedGarages.has(garageId);
 
-            if (garageMarkers[garageId]) {
-                const marker = garageMarkers[garageId];
-                marker.vehicles = vehicles;
-                if (marker.getPopup()) {
-                    marker.getPopup().setContent(createGaragePopupContent(garage, vehicles));
+            // Hide garage cluster markers on map when zoomed out (< 13), unless user explicitly expanded it
+            if (currentZoom >= MIN_GARAGE_ZOOM || isExpanded) {
+                activeGarageIds.add(garageId);
+
+                const garageLatLng = [garage.lat, garage.lng];
+
+                const badgeHtml = isExpanded ? `
+                    <div class="garage-cluster-pill expanded">
+                        <span>📁 Collapse ${garage.name} (${vehicles.length})</span>
+                    </div>
+                ` : `
+                    <div class="garage-cluster-pill">
+                        <span>🏭</span>
+                        <span>${garage.name} (${vehicles.length})</span>
+                    </div>
+                `;
+
+                if (garageMarkers[garageId]) {
+                    const marker = garageMarkers[garageId];
+                    marker.vehicles = vehicles;
+
+                    const iconDiv = marker.getElement();
+                    if (iconDiv) {
+                        iconDiv.innerHTML = badgeHtml;
+                    }
+
+                    if (marker.getPopup()) {
+                        marker.getPopup().setContent(createGaragePopupContent(garage, vehicles));
+                    }
+                } else {
+                    const customIcon = L.divIcon({
+                        className: 'garage-cluster-marker-wrapper',
+                        html: badgeHtml,
+                        iconSize: [0, 0],
+                        iconAnchor: [0, 0],
+                        popupAnchor: [0, -14]
+                    });
+
+                    const marker = L.marker(garageLatLng, { icon: customIcon });
+                    marker.vehicles = vehicles;
+                    marker.bindPopup(createGaragePopupContent(garage, vehicles));
+
+                    // Clicking garage marker ONLY opens the popup card! Does NOT auto-expand!
+                    marker.on('click', () => {
+                        map.panTo(marker.getLatLng());
+                    });
+
+                    garageMarkers[garageId] = marker;
+                    markersToAdd.push(marker);
                 }
-            } else {
-                const customIcon = L.divIcon({
-                    className: 'bus-marker-container',
-                    html: `
-                        <div class="custom-vehicle-marker">
-                            <div class="garage-cluster-pill">
-                                <span>🏭</span>
-                                <span>${garage.name} (${vehicles.length})</span>
-                            </div>
-                            <div class="garage-pin-arrow"></div>
-                        </div>
-                    `,
-                    iconSize: [0, 0],
-                    iconAnchor: [0, 0],
-                    popupAnchor: [0, -18]
-                });
-
-                const marker = L.marker(garageLatLng, { icon: customIcon });
-                marker.vehicles = vehicles;
-                marker.bindPopup(createGaragePopupContent(garage, vehicles));
-
-                marker.on('click', () => {
-                    map.panTo(marker.getLatLng());
-                });
-
-                garageMarkers[garageId] = marker;
-                markersToAdd.push(marker);
             }
         });
 
-        // Remove unselected or empty garage cluster markers
+        // Remove unselected, low-zoom, or empty garage cluster markers
         Object.keys(garageMarkers).forEach(gId => {
             if (!activeGarageIds.has(gId)) {
                 markerClusterGroup.removeLayer(garageMarkers[gId]);
@@ -596,7 +634,7 @@ async function updateBuses() {
             }
         });
 
-        // 3. Render Individual Vehicle Markers
+        // 3. Render Individual Vehicle Markers (Exact Original Style Before GO & UP)
         unclusteredBuses.forEach(bus => {
             try {
                 activeBusIds.add(bus.id);
@@ -614,9 +652,9 @@ async function updateBuses() {
 
                     const iconDiv = marker.getElement();
                     if (iconDiv) {
-                        const headingContainer = iconDiv.querySelector('.marker-heading-container');
-                        if (headingContainer) {
-                            headingContainer.style.transform = `rotate(${bus.bearing || 0}deg)`;
+                        const arrowOrbit = iconDiv.querySelector('.arrow-orbit');
+                        if (arrowOrbit) {
+                            arrowOrbit.style.transform = `rotate(${bus.bearing || 0}deg)`;
                         }
                     }
 
@@ -626,11 +664,11 @@ async function updateBuses() {
 
                 } else {
                     const customIcon = L.divIcon({
-                        className: 'bus-marker-container',
+                        className: 'custom-bus-icon-wrapper',
                         html: createVehicleIconHtml(bus, vType),
-                        iconSize: [0, 0],
-                        iconAnchor: [0, 0],
-                        popupAnchor: [0, -18]
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16],
+                        popupAnchor: [0, -14]
                     });
 
                     const marker = L.marker(newLatLng, { icon: customIcon });
@@ -672,27 +710,21 @@ async function updateBuses() {
     }
 }
 
+// Exact Original Vehicle Icon HTML (Restored from commit aade297 before GO & UP)
 function createVehicleIconHtml(bus, vType) {
-    let emoji = '🚌';
     let badgeColor = '#DA291C';
-    let textColor = '#FFFFFF';
+    let badgeTextColor = '#FFFFFF';
 
     if (bus.agency === 'go') {
         badgeColor = '#00853D';
-        emoji = (vType === 'train') ? '🚆' : '🚌';
     } else if (bus.agency === 'up') {
         badgeColor = '#004B49';
-        textColor = '#D4AF37';
-        emoji = '🚆';
+        badgeTextColor = '#D4AF37';
     } else {
-        if (vType === 'streetcar') {
-            badgeColor = '#DA291C';
-            emoji = '🚋';
-        } else if (vType === 'subway') {
+        if (vType === 'subway') {
             const meta = routeNames[bus.routeId];
             badgeColor = meta ? meta.color : '#FFC72C';
-            textColor = meta ? meta.textColor : '#000000';
-            emoji = '🚇';
+            badgeTextColor = meta ? meta.textColor : '#000000';
         }
     }
 
@@ -700,18 +732,13 @@ function createVehicleIconHtml(bus, vType) {
     const bearing = bus.bearing || 0;
 
     return `
-        <div class="custom-vehicle-marker agency-${bus.agency}">
-            ${(bearing > 0 || bus.speed > 0) ? `
-            <div class="marker-heading-container" style="transform: rotate(${bearing}deg);">
-                <svg class="heading-arrow-svg" viewBox="0 0 24 24" width="20" height="20">
-                    <polygon points="12,1 21,21 12,16 3,21" fill="#FFD700" stroke="#000000" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-            </div>` : ''}
-            <div class="marker-pill" style="background-color: ${badgeColor}; color: ${textColor};">
-                <span class="marker-emoji">${emoji}</span>
-                <span class="marker-route">${routeLabel}</span>
+        <div class="bus-marker-container">
+            <div class="arrow-orbit" style="transform: rotate(${bearing}deg);">
+                <div class="bus-arrow" style="border-bottom-color: ${badgeColor};"></div>
             </div>
-            <div class="marker-pin-arrow" style="border-top-color: ${badgeColor};"></div>
+            <div class="bus-box" style="background-color: ${badgeColor}; color: ${badgeTextColor};">
+                ${routeLabel}
+            </div>
         </div>
     `;
 }
@@ -897,20 +924,29 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// Update Search Dropdown: Named Routes at Top, Subway Lines 1-6 Always Included, Unknown Just Above Garages, Garages at Very Bottom A-Z
 function updateRouteDropdown(buses) {
     if (!routeList) return;
 
     const favorites = getFavorites();
-    const currentRoutesInFeed = new Set();
+    // Always include Subway Lines 1, 2, 4, 5, 6 in available routes so user can search for Line 5 & Line 6
+    const currentRoutesInFeed = new Set(['1', '2', '4', '5', '6']);
+    let hasUnknownInFeed = false;
 
     buses.forEach(b => {
         if (selectedAgency !== 'all' && b.agency !== selectedAgency) return;
         const vType = getVehicleType(b);
         if (selectedMode !== 'all' && vType !== selectedMode) return;
-        if (b.routeId) currentRoutesInFeed.add(b.routeId);
+        
+        if (!b.routeId || b.routeId === '0' || String(b.routeId).toLowerCase().includes('unknown')) {
+            hasUnknownInFeed = true;
+        } else {
+            currentRoutesInFeed.add(b.routeId);
+        }
     });
 
-    const sortedRoutes = Array.from(currentRoutesInFeed).sort((a, b) => {
+    // 1. Sort Named Transit Routes (Favorites at top, then numerically/alphabetically)
+    const sortedNamedRoutes = Array.from(currentRoutesInFeed).sort((a, b) => {
         const isFavA = favorites.has(a);
         const isFavB = favorites.has(b);
         if (isFavA && !isFavB) return -1;
@@ -922,23 +958,32 @@ function updateRouteDropdown(buses) {
         return numA - numB;
     });
 
-    if (areSetsEqual(new Set(sortedRoutes), availableRoutes)) return;
-
-    availableRoutes = new Set(sortedRoutes);
     routeList.innerHTML = "";
-
     const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-    sortedRoutes.forEach(routeId => {
+    // Render Active Named Transit Routes at TOP
+    sortedNamedRoutes.forEach(routeId => {
         const item = document.createElement('div');
         item.className = 'route-item';
 
         const isChecked = selectedRoutes.has(routeId);
         const isFav = favorites.has(routeId);
         const routeMeta = routeNames[routeId];
-        const routeDesc = routeMeta ? (routeMeta.longName || routeMeta.shortName) : '';
-        const badgeColor = routeMeta ? routeMeta.color : '#DA291C';
-        const badgeTextColor = routeMeta ? routeMeta.textColor : '#FFFFFF';
+        
+        let routeDesc = routeMeta ? (routeMeta.longName || routeMeta.shortName) : '';
+        let badgeColor = routeMeta ? routeMeta.color : '#DA291C';
+        let badgeTextColor = routeMeta ? routeMeta.textColor : '#FFFFFF';
+
+        // Custom default metadata for Subway Lines 5 and 6 if static GTFS hasn't loaded them yet
+        if (routeId === '5') {
+            if (!routeDesc) routeDesc = 'Line 5 Eglinton LRT';
+            badgeColor = '#E65100';
+            badgeTextColor = '#FFFFFF';
+        } else if (routeId === '6') {
+            if (!routeDesc) routeDesc = 'Line 6 Finch West LRT';
+            badgeColor = '#5D4037';
+            badgeTextColor = '#FFFFFF';
+        }
 
         item.innerHTML = `
             <div class="route-left">
@@ -981,6 +1026,84 @@ function updateRouteDropdown(buses) {
                 selectedRoutes.delete(routeId);
             }
             applyRouteFilterChange();
+        });
+
+        routeList.appendChild(item);
+    });
+
+    // 2. Render 'Unknown / Off-Duty' Route Item JUST ABOVE GARAGES (if present)
+    if (hasUnknownInFeed) {
+        const item = document.createElement('div');
+        item.className = 'route-item unknown-route-item';
+
+        const isChecked = selectedRoutes.has('Unknown');
+        const isFav = favorites.has('Unknown');
+
+        item.innerHTML = `
+            <div class="route-left">
+                <span class="fav-star ${isFav ? 'active' : ''}">${isFav ? '★' : '☆'}</span>
+                <span class="route-badge" style="background-color: #64748b; color: #ffffff;">❓ Unknown</span>
+                <span class="route-name" style="color: #94a3b8;">Unassigned / Off-Duty Vehicles</span>
+            </div>
+            <input type="checkbox" class="route-checkbox" ${isChecked ? 'checked' : ''}>
+        `;
+
+        if (searchTerm && !('unknown').includes(searchTerm) && !('off-duty').includes(searchTerm)) {
+            item.style.display = 'none';
+        }
+
+        const star = item.querySelector('.fav-star');
+        const checkbox = item.querySelector('.route-checkbox');
+
+        item.addEventListener('click', (e) => {
+            if (e.target === star) {
+                toggleFavorite('Unknown', e);
+                return;
+            }
+            checkbox.checked = !checkbox.checked;
+            if (checkbox.checked) {
+                selectedRoutes.add('Unknown');
+            } else {
+                selectedRoutes.delete('Unknown');
+            }
+            applyRouteFilterChange();
+        });
+
+        checkbox.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (checkbox.checked) {
+                selectedRoutes.add('Unknown');
+            } else {
+                selectedRoutes.delete('Unknown');
+            }
+            applyRouteFilterChange();
+        });
+
+        routeList.appendChild(item);
+    }
+
+    // 3. Render Garages & Carhouses at VERY BOTTOM of Search Dropdown (Clean Uniform Names Sorted ALPHABETICALLY A-Z)
+    const matchingGarages = GTA_GARAGES
+        .filter(g => {
+            if (selectedAgency !== 'all' && g.agency !== selectedAgency) return false;
+            if (!searchTerm) return true;
+            return (g.name.toLowerCase().includes(searchTerm) || g.id.toLowerCase().includes(searchTerm));
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+    matchingGarages.forEach(garage => {
+        const item = document.createElement('div');
+        item.className = 'route-item garage-search-item';
+        item.innerHTML = `
+            <div class="route-left">
+                <span class="route-badge" style="background-color: #00853D; color: #ffffff;">🏭 GARAGE</span>
+                <span class="route-name" style="font-weight: 700;">${garage.name}</span>
+            </div>
+        `;
+
+        item.addEventListener('click', () => {
+            focusGarageOnMap(garage.id);
+            if (routeList) routeList.classList.add('route-list-hidden');
         });
 
         routeList.appendChild(item);
