@@ -175,34 +175,20 @@ body, html {
     gap: 6px;
 }
 
-/* Filter Controls Row (Agency Pills + Mode Dropdown) */
-#filter-controls-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    width: 100%;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 2px;
-}
-#filter-controls-row::-webkit-scrollbar {
-    display: none;
-}
-
-/* Primary Agency Filters (Full Agency Names without Truncation/Ellipsis) */
+/* Primary Agency Filters (Non-scrolling 4 equal buttons) */
 #agency-filters {
     display: flex;
     flex-wrap: nowrap;
     gap: 4px;
-    flex-shrink: 0;
+    width: 100%;
+    overflow: hidden;
 }
 
 .agency-btn {
-    padding: 6px 10px;
+    padding: 6px 4px;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 0.77rem;
+    font-size: 0.76rem;
     border: 1px solid var(--dark-border);
     background: var(--dark-surface-translucent);
     backdrop-filter: blur(12px);
@@ -210,10 +196,10 @@ body, html {
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s ease;
-    flex-shrink: 0;
+    flex: 1 1 0px;
+    min-width: 0;
     text-align: center;
-    overflow: visible;
-    text-overflow: clip;
+    overflow: hidden;
 }
 
 .agency-btn:hover {
@@ -246,7 +232,14 @@ body, html {
     color: #D4AF37;
 }
 
-/* Secondary Mode Dropdown Select */
+/* Secondary Mode Select & Search Input Row */
+#secondary-search-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
 #mode-select-wrapper {
     flex-shrink: 0;
 }
@@ -256,10 +249,10 @@ body, html {
     backdrop-filter: blur(14px);
     border: 1px solid var(--dark-border);
     color: var(--text-main);
-    padding: 5px 8px;
-    border-radius: 8px;
+    padding: 7px 8px;
+    border-radius: 12px;
     font-weight: 700;
-    font-size: 0.76rem;
+    font-size: 0.78rem;
     outline: none;
     cursor: pointer;
     box-shadow: var(--shadow-sm);

@@ -2,7 +2,7 @@
 const translations = {
     en: {
         navTitle: "GTA Live Transit Tracker",
-        welcome: "Greater Toronto Area Transit Tracker",
+        welcome: "GTA Live Transit Tracker",
         timeLabel: "Current Time:",
         loading: "Loading...",
         errorTitle: "GTA Feed Warning",
@@ -14,24 +14,24 @@ const translations = {
         locationPopup: "You are here",
         locationNotSupportedAlert: "Geolocation is not supported by your browser.",
         locationAlert: "Unable to retrieve your position. Please check your location permissions.",
-        searchPlaceholder: "Search Route (e.g. 1, 501, LW, UP)...",
+        searchPlaceholder: "Search Route (e.g. 1, 501)...",
         dirLabel: "Direction",
         inbound: "Inbound",
         outbound: "Outbound",
         speedLabel: "Speed",
         occupancyLabel: "Occupancy",
         vehicleType: "Vehicle Type",
-        agencyAll: "🌐 All Agencies",
+        agencyAll: "🌐 All",
         agencyTtc: "🔴 TTC",
-        agencyGo: "🟢 GO Transit",
-        agencyUp: "🚆 UP Express",
+        agencyGo: "🟢 GO",
+        agencyUp: "🚆 UP",
         bus: "Bus",
         streetcar: "Streetcar",
         subway: "Subway",
         train: "Train",
         modeAll: "🌐 All Modes",
         modeBus: "🚌 Bus",
-        modeStreetcar: "🚋 Streetcar",
+        modeStreetcar: "`🚋 Streetcar",
         modeSubway: "🚇 Subway",
         modeTrain: "🚆 Train",
         liveCountTag: "Live",
@@ -45,7 +45,7 @@ const translations = {
     },
     fr: {
         navTitle: "Suivi du Transit GTA",
-        welcome: "Suivi du réseau de transport de la région de Toronto (GTA)",
+        welcome: "Suivi du Transit GTA",
         timeLabel: "Heure actuelle:",
         loading: "Chargement...",
         errorTitle: "Avertissement Flux GTA",
@@ -57,17 +57,17 @@ const translations = {
         locationPopup: "Vous êtes ici",
         locationNotSupportedAlert: "La géolocalisation n'est pas supportée par votre navigateur.",
         locationAlert: "Impossible de récupérer votre position. Vérifiez les autorisations.",
-        searchPlaceholder: "Chercher un itinéraire (ex. 1, 501, LW, UP)...",
+        searchPlaceholder: "Chercher un itinéraire (ex. 1, 501)...",
         dirLabel: "Direction",
         inbound: "Aller",
         outbound: "Retour",
         speedLabel: "Vitesse",
         occupancyLabel: "Occupation",
         vehicleType: "Type de véhicule",
-        agencyAll: "🌐 Toutes Agences",
+        agencyAll: "🌐 Tous",
         agencyTtc: "🔴 TTC",
-        agencyGo: "🟢 GO Transit",
-        agencyUp: "🚆 UP Express",
+        agencyGo: "🟢 GO",
+        agencyUp: "🚆 UP",
         bus: "Autobus",
         streetcar: "Tramway",
         subway: "Métro",
@@ -87,8 +87,8 @@ const translations = {
         agencyUnavailableMsg: "Le suivi GPS en direct de {AGENCY} est actuellement indisponible. Intégration de l'API à venir !"
     },
     zh: {
-        navTitle: "大多伦多(GTA)公共交通实时追踪器",
-        welcome: "大多伦多地区 (GTA) 公共交通实时追踪器",
+        navTitle: "GTA 实时公交追踪器",
+        welcome: "GTA 实时公交追踪器",
         timeLabel: "当前时间：",
         loading: "加载中...",
         errorTitle: "GTA数据源提示",
@@ -100,17 +100,17 @@ const translations = {
         locationPopup: "您在这里",
         locationNotSupportedAlert: "您的浏览器不支持地理位置功能。",
         locationAlert: "无法获取您的位置，请检查浏览器定位权限。",
-        searchPlaceholder: "搜索线路 (如 1, 501, LW, UP)...",
+        searchPlaceholder: "搜索线路 (如 1, 501)...",
         dirLabel: "方向",
         inbound: "上行",
         outbound: "下行",
         speedLabel: "车速",
         occupancyLabel: "载客情况",
         vehicleType: "车辆类型",
-        agencyAll: "🌐 所有公司",
-        agencyTtc: "🔴 TTC 多伦多公局",
-        agencyGo: "🟢 GO 区域城铁/巴士",
-        agencyUp: "🚆 UP 机场快线",
+        agencyAll: "🌐 全部",
+        agencyTtc: "🔴 TTC",
+        agencyGo: "🟢 GO",
+        agencyUp: "🚆 UP",
         bus: "公交车",
         streetcar: "有轨电车",
         subway: "地铁",
@@ -214,7 +214,8 @@ setInterval(updateTime, 1000);
 
 // Initialize Map Centered on Toronto
 const map = L.map('map', {
-    zoomControl: false
+    zoomControl: false,
+    preferCanvas: true
 }).setView([43.6532, -79.3832], 12);
 
 // --- MAP THEMES ---
@@ -244,13 +245,13 @@ function toggleMapTheme() {
     MAP_THEMES[currentTheme].addTo(map);
 }
 
-// Marker Cluster Group
+// Optimized Marker Cluster Group with Viewport Culling & Performance Parameters
 const markerClusterGroup = L.markerClusterGroup({
     chunkedLoading: true,
-    chunkInterval: 100,
-    chunkDelay: 10,
-    maxClusterRadius: 45,
-    disableClusteringAtZoom: 15,
+    chunkInterval: 150,
+    chunkDelay: 20,
+    maxClusterRadius: 50,
+    disableClusteringAtZoom: 16,
     spiderfyOnMaxZoom: true,
     showCoverageOnHover: false,
     removeOutsideVisibleBounds: true,
@@ -439,7 +440,12 @@ async function updateBuses() {
             isFirstLoad = false;
         }
 
-        updateRouteDropdown(buses);
+        // Only update route dropdown DOM elements if list is visible or search input focused
+        const routeList = document.getElementById('route-list');
+        const searchInput = document.getElementById('route-search');
+        if (routeList && (!routeList.classList.contains('route-list-hidden') || (searchInput && document.activeElement === searchInput))) {
+            updateRouteDropdown(buses);
+        }
 
         if (isSpiderfied) {
             pendingClusterUpdates = true;
@@ -561,7 +567,7 @@ function createVehicleIconHtml(bus, vType) {
     } else {
         if (vType === 'streetcar') {
             badgeColor = '#DA291C';
-            emoji = '🚋';
+            emoji = '`🚋';
         } else if (vType === 'subway') {
             const meta = routeNames[bus.routeId];
             badgeColor = meta ? meta.color : '#FFC72C';
@@ -707,13 +713,19 @@ const clearBtn = document.getElementById('clear-search');
 
 if (searchInput) {
     searchInput.addEventListener('focus', () => {
-        if (routeList) routeList.classList.remove('route-list-hidden');
+        if (routeList) {
+            routeList.classList.remove('route-list-hidden');
+            if (currentBusData.length > 0) updateRouteDropdown(currentBusData);
+        }
     });
 
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
         if (clearBtn) clearBtn.style.display = query.length > 0 ? 'block' : 'none';
-        if (routeList) routeList.classList.remove('route-list-hidden');
+        if (routeList) {
+            routeList.classList.remove('route-list-hidden');
+            if (currentBusData.length > 0) updateRouteDropdown(currentBusData);
+        }
 
         document.querySelectorAll('.route-item').forEach(item => {
             const text = item.textContent.toLowerCase();
@@ -849,20 +861,25 @@ function createHalifaxPopupContent() {
 const halifaxMarker = L.marker([44.648, -63.591], { icon: halifaxIcon })
     .bindPopup(createHalifaxPopupContent());
 
+let easterEggTimeout = null;
 function checkHalifaxEasterEgg() {
-    const zoom = map.getZoom();
-    const bounds = map.getBounds();
-    const isHalifaxInView = bounds.contains([44.648, -63.591]);
-    
-    if (zoom >= 11 && isHalifaxInView) {
-        if (!map.hasLayer(halifaxMarker)) {
-            map.addLayer(halifaxMarker);
+    if (easterEggTimeout) return;
+    easterEggTimeout = setTimeout(() => {
+        easterEggTimeout = null;
+        const zoom = map.getZoom();
+        const bounds = map.getBounds();
+        const isHalifaxInView = bounds.contains([44.648, -63.591]);
+        
+        if (zoom >= 11 && isHalifaxInView) {
+            if (!map.hasLayer(halifaxMarker)) {
+                map.addLayer(halifaxMarker);
+            }
+        } else {
+            if (map.hasLayer(halifaxMarker)) {
+                map.removeLayer(halifaxMarker);
+            }
         }
-    } else {
-        if (map.hasLayer(halifaxMarker)) {
-            map.removeLayer(halifaxMarker);
-        }
-    }
+    }, 200);
 }
 
 map.on('zoomend moveend', checkHalifaxEasterEgg);

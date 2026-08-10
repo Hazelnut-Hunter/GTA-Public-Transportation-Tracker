@@ -43,25 +43,25 @@
 
         <!-- Search & Dual Filter Container -->
         <div id="search-container">
-            <div id="filter-controls-row">
-                <!-- Primary Agency Filter Row -->
-                <div id="agency-filters">
-                    <button class="agency-btn active" onclick="setAgencyFilter('all')" id="btn-agency-all">🌐 All Agencies</button>
-                    <button class="agency-btn ttc-btn" onclick="setAgencyFilter('ttc')" id="btn-agency-ttc">🔴 TTC</button>
-                    <button class="agency-btn go-btn" onclick="setAgencyFilter('go')" id="btn-agency-go">🟢 GO Transit</button>
-                    <button class="agency-btn up-btn" onclick="setAgencyFilter('up')" id="btn-agency-up">🚆 UP Express</button>
-                </div>
+            <!-- Primary Agency Filters (No scrolling, 4 equal buttons) -->
+            <div id="agency-filters">
+                <button class="agency-btn active" onclick="setAgencyFilter('all')" id="btn-agency-all">🌐 All</button>
+                <button class="agency-btn ttc-btn" onclick="setAgencyFilter('ttc')" id="btn-agency-ttc">🔴 TTC</button>
+                <button class="agency-btn go-btn" onclick="setAgencyFilter('go')" id="btn-agency-go">🟢 GO Transit</button>
+                <button class="agency-btn up-btn" onclick="setAgencyFilter('up')" id="btn-agency-up">🚆 UP Express</button>
+            </div>
 
-                <!-- Secondary Mode Dropdown Select -->
+            <!-- Mode Select & Search Input Row -->
+            <div id="secondary-search-row">
                 <div id="mode-select-wrapper">
                     <select id="mode-select" class="mode-dropdown" onchange="setModeFilter(this.value)"></select>
                 </div>
-            </div>
 
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="route-search" placeholder="Search Route (e.g. 1, 501, LW, UP)..." autocomplete="off">
-                <button id="clear-search" onclick="clearSelection()" style="display:none;">✕</button>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="route-search" placeholder="Search Route (e.g. 1, 501)..." autocomplete="off">
+                    <button id="clear-search" onclick="clearSelection()" style="display:none;">✕</button>
+                </div>
             </div>
 
             <div id="route-list" class="route-list-hidden"></div>
