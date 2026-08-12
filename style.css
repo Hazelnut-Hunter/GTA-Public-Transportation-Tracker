@@ -235,13 +235,14 @@ body, html {
 /* Secondary Mode Select & Search Input Row */
 #secondary-search-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 6px;
     width: 100%;
 }
 
 #mode-select-wrapper {
-    flex-shrink: 0;
+    flex: 0 0 auto;
 }
 
 .mode-dropdown {
@@ -266,6 +267,43 @@ body, html {
 .mode-dropdown option {
     background: #1e293b;
     color: #ffffff;
+}
+
+.search-box {
+    flex: 1 1 180px;
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    background: var(--dark-surface-translucent);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--dark-border);
+    border-radius: 12px;
+    padding: 6px 12px;
+    box-shadow: var(--shadow-sm);
+    box-sizing: border-box;
+}
+
+.search-icon {
+    margin-right: 8px;
+    font-size: 0.88rem;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+#route-search {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-main);
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+#route-search::placeholder {
+    color: var(--text-muted);
 }
 
 /* Exact Original Vehicle Marker Style (Before GO & UP Integration) */

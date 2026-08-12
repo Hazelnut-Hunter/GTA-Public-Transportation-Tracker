@@ -14,7 +14,7 @@ const translations = {
         locationPopup: "You are here",
         locationNotSupportedAlert: "Geolocation is not supported by your browser.",
         locationAlert: "Unable to retrieve your position. Please check your location permissions.",
-        searchPlaceholder: "Search Route or Garage (e.g. 900, 300, 200, Leslie Barns)...",
+        searchPlaceholder: "Search Route (e.g. 1, 501)...",
         dirLabel: "Direction",
         inbound: "Inbound",
         outbound: "Outbound",
@@ -23,8 +23,8 @@ const translations = {
         vehicleType: "Vehicle Type",
         agencyAll: "🌐 All",
         agencyTtc: "🔴 TTC",
-        agencyGo: "🟢 GO",
-        agencyUp: "🚆 UP",
+        agencyGo: "🟢 GO Transit",
+        agencyUp: "🚆 UP Express",
         bus: "Bus",
         streetcar: "Streetcar",
         subway: "Subway",
@@ -60,7 +60,7 @@ const translations = {
         locationPopup: "Vous êtes ici",
         locationNotSupportedAlert: "La géolocalisation n'est pas supportée par votre navigateur.",
         locationAlert: "Impossible de récupérer votre position. Vérifiez les autorisations.",
-        searchPlaceholder: "Chercher un itinéraire ou dépôt (ex. 900, 300, 200, Leslie Barns)...",
+        searchPlaceholder: "Chercher un itinéraire (ex. 1, 501)...",
         dirLabel: "Direction",
         inbound: "Aller",
         outbound: "Retour",
@@ -69,8 +69,8 @@ const translations = {
         vehicleType: "Type de véhicule",
         agencyAll: "🌐 Tous",
         agencyTtc: "🔴 TTC",
-        agencyGo: "🟢 GO",
-        agencyUp: "🚆 UP",
+        agencyGo: "🟢 GO Transit",
+        agencyUp: "🚆 UP Express",
         bus: "Autobus",
         streetcar: "Tramway",
         subway: "Métro",
@@ -106,7 +106,7 @@ const translations = {
         locationPopup: "您在这里",
         locationNotSupportedAlert: "您的浏览器不支持地理位置功能。",
         locationAlert: "无法获取您的位置，请检查浏览器定位权限。",
-        searchPlaceholder: "搜索线路或车库 (如 900, 300, 200, Leslie Barns)...",
+        searchPlaceholder: "搜索线路 (如 1, 501)...",
         dirLabel: "方向",
         inbound: "上行",
         outbound: "下行",
@@ -115,8 +115,8 @@ const translations = {
         vehicleType: "车辆类型",
         agencyAll: "🌐 全部",
         agencyTtc: "🔴 TTC",
-        agencyGo: "🟢 GO",
-        agencyUp: "🚆 UP",
+        agencyGo: "🟢 GO Transit",
+        agencyUp: "🚆 UP Express",
         bus: "公交车",
         streetcar: "有轨电车",
         subway: "地铁",
@@ -364,7 +364,7 @@ function setAgencyFilter(agency) {
     }
 
     selectedAgency = agency;
-    
+
     document.querySelectorAll('.agency-btn').forEach(btn => {
         btn.classList.toggle('active', btn.id === `btn-agency-${agency}`);
     });
@@ -467,58 +467,31 @@ function toggleFavorite(routeId, event) {
     updateRouteDropdown(currentBusData);
 }
 
-const STREETCAR_ROUTES = new Set(['501', '503', '504', '505', '506', '507', '509', '510', '511', '512', '301', '304', '306', '310']);
-const SUBWAY_ROUTES = new Set(['1', '2', '3', '4', '5', '6']);
+// Uniform Category Color Resolver for Vehicles and Search Badges (Supplied directly by Backend API)
+function getRouteColors(routeId, agency, vType) {
+    if (agency === 'go') return { color: '#00853D', textColor: '#FFFFFF' };
+    if (agency === 'up') return { color: '#004B49', textColor: '#D4AF37' };
+
+    const meta = routeNames[routeId];
+    if (meta && meta.color) {
+        return { color: meta.color, textColor: meta.textColor || '#FFFFFF' };
+    }
+
+    return { color: '#DA291C', textColor: '#FFFFFF' };
+}
 
 function getVehicleType(bus) {
     if (bus.type) return bus.type;
     const rId = String(bus.routeId);
-    if (bus.agency === 'up' || ['LW','LE','MI','KI','BR','ST','RH'].includes(rId)) return 'train';
+    if (bus.agency === 'up' || ['LW', 'LE', 'MI', 'KI', 'BR', 'ST', 'RH'].includes(rId)) return 'train';
+    // Helper check if needed for legacy logic:
+    const SUBWAY_ROUTES = new Set(['1', '2', '3', '4', '5', '6']);
+    const STREETCAR_ROUTES = new Set(['501', '503', '504', '505', '506', '507', '509', '510', '511', '512', '301', '304', '306', '310']);
     if (SUBWAY_ROUTES.has(rId)) return 'subway';
     if (STREETCAR_ROUTES.has(rId)) return 'streetcar';
     return 'bus';
 }
 
-// Uniform Category Color Resolver for Vehicles and Search Badges
-function getRouteColors(routeId, agency, vType) {
-    if (agency === 'go') return { color: '#00853D', textColor: '#FFFFFF' };
-    if (agency === 'up') return { color: '#004B49', textColor: '#D4AF37' };
-
-    const rId = String(routeId);
-    const num = parseInt(rId.replace(/\D/g, '')) || 0;
-
-    // 1. 900-series Express Routes: Express Green (#00853D)
-    if (num >= 900 && num <= 999) {
-        return { color: '#00853D', textColor: '#FFFFFF' };
-    }
-
-    // 2. 300-series Blue Night Network: Deep Blue (#0055A5)
-    if (num >= 300 && num <= 399) {
-        return { color: '#0055A5', textColor: '#FFFFFF' };
-    }
-
-    // 3. 200-series Pink Lines: Vibrant Pink (#E91E63)
-    if (num >= 200 && num <= 299) {
-        return { color: '#E91E63', textColor: '#FFFFFF' };
-    }
-
-    // 4. Subway Lines
-    if (rId === '1') return { color: '#FFC72C', textColor: '#000000' };
-    if (rId === '2') return { color: '#00994C', textColor: '#FFFFFF' };
-    if (rId === '3') return { color: '#00A3E0', textColor: '#FFFFFF' };
-    if (rId === '4') return { color: '#B30086', textColor: '#FFFFFF' };
-    if (rId === '5') return { color: '#E65100', textColor: '#FFFFFF' };
-    if (rId === '6') return { color: '#5D4037', textColor: '#FFFFFF' };
-
-    // 5. Static GTFS metadata if customized
-    const meta = routeNames[routeId];
-    if (meta && meta.color && meta.color !== '#DA291C') {
-        return { color: meta.color, textColor: meta.textColor || '#FFFFFF' };
-    }
-
-    // 6. Default TTC Red
-    return { color: '#DA291C', textColor: '#FFFFFF' };
-}
 
 function showErrorDetail() {
     const title = translations[currentLang].errorTitle;
@@ -751,9 +724,11 @@ async function updateBuses() {
     }
 }
 
-// Exact Original Vehicle Icon HTML with Dynamic Category Colors (Express 900s, Pink 200s, Blue Night 300s)
+// Vehicle Icon HTML prioritizing backend precomputed route colors
 function createVehicleIconHtml(bus, vType) {
-    const { color: badgeColor, textColor: badgeTextColor } = getRouteColors(bus.routeId, bus.agency, vType);
+    const fallback = getRouteColors(bus.routeId, bus.agency, vType);
+    const badgeColor = bus.color || fallback.color;
+    const badgeTextColor = bus.textColor || fallback.textColor;
     const routeLabel = String(bus.routeId).length <= 4 ? bus.routeId : String(bus.routeId).slice(0, 4);
     const bearing = bus.bearing || 0;
 
@@ -963,7 +938,7 @@ function updateRouteDropdown(buses) {
         if (selectedAgency !== 'all' && b.agency !== selectedAgency) return;
         const vType = getVehicleType(b);
         if (selectedMode !== 'all' && vType !== selectedMode) return;
-        
+
         if (!b.routeId || b.routeId === '0' || String(b.routeId).toLowerCase().includes('unknown')) {
             hasUnknownInFeed = true;
         } else {
@@ -995,7 +970,7 @@ function updateRouteDropdown(buses) {
         const isChecked = selectedRoutes.has(routeId);
         const isFav = favorites.has(routeId);
         const routeMeta = routeNames[routeId];
-        
+
         let routeDesc = routeMeta ? (routeMeta.longName || routeMeta.shortName) : '';
         const { color: badgeColor, textColor: badgeTextColor } = getRouteColors(routeId, 'ttc', 'bus');
 
@@ -1166,7 +1141,7 @@ function checkHalifaxEasterEgg() {
         const zoom = map.getZoom();
         const bounds = map.getBounds();
         const isHalifaxInView = bounds.contains([44.648, -63.591]);
-        
+
         if (zoom >= 11 && isHalifaxInView) {
             if (!map.hasLayer(halifaxMarker)) {
                 map.addLayer(halifaxMarker);
